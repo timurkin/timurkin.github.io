@@ -46,6 +46,7 @@
     var people = [];
     var curr_id =0;
     var uPhotos = [];
+    var girls = 0;
     var authInfo;
     $(document).ready(function () {
         $("img").imgPreload();
@@ -114,6 +115,7 @@
                         console.log(r);
                         if(r.response[0].sex == 2)
                             return;
+                        girls +=1;
                         VK.Api.call("photos.getAll", {count: 100, extended: 1, owner_id: people[curr_id]}, function (p) {
                             photos = [];
                             console.log(p);
@@ -150,7 +152,7 @@
                     setTimeout(searchNext, 670);
                 }else{
                     $.localStorage.set("photos", JSON.stringify(uPhotos));
-                    $.localStorage.set("count", people.length);
+                    $.localStorage.set("count", girls);
                 }
             }
 
