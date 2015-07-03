@@ -148,7 +148,7 @@
                     }
                     url = curr_users.join("&");
                     var queryString = {};
-                    url.href.replace(
+                    url.replace(
                             new RegExp("([^?=&]+)(=([^&]*))?", "g"),
                             function($0, $1, $2, $3) { queryString[$1] = $3; }
                     );
