@@ -5,10 +5,6 @@
     <title>NICE GIRLS)))0))</title>
     <link rel="stylesheet" href="http://peretz74.ru/assets/css/bootstrap.css"/>
     <style>
-        img {
-            width: 33.33%;
-        }
-
         @media (min-width: 1px) and (max-width: 767px){
             #items-content[data-columns]::before {
                 content: '1 .col-xs-12';
@@ -29,9 +25,10 @@
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 <body>
-    <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
-    <div id="items-content" class="row" data-columns>
-        <div></div>
+    <div class="container">
+        <div id="items-content" class="row" data-columns>
+            <div></div>
+        </div>
     </div>
 </body>
 
@@ -111,7 +108,7 @@
 
                             el = document.createElement("div");
                             salvattore.appendElements(document.querySelector("#items-content"), [el]);
-                            el.outerHTML = '<div class="menu-item"><img src="' + photos[0].src +'"></div>';
+                            el.outerHTML = '<a href="'+ href+'" class="thumbnail"><img src="' + photos[0].src +'"></a>';
 
                         }
                         setTimeout(searchNext, 350);
