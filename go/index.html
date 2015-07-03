@@ -91,6 +91,7 @@
                 if($.cookie("count") < people.length)
                     searchNext();
                 else{
+                    console.log("БОЛЬШЕ ЖЕ:::");
                     $uPhotos = JSON.parse($.cookie("photos"));
                     $uPhotos.forEach(function(t){
                         appendPhoto(t);
