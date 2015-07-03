@@ -21,6 +21,15 @@
     VK.init({
         apiId: 4981357
     });
+
+    VK.Auth.getLoginStatus(function(response) {
+        if (response.session) {
+            GO(response.session);
+        } else {
+            VK.Auth.login(authInfo, 4);
+        }
+    });
+
     function authInfo(response) {
         if (response.session) {
             GO(response.session);
@@ -28,6 +37,6 @@
             VK.Auth.login(authInfo, 4);
         }
     }
-    VK.Auth.login(authInfo, 4);
+
 </script>
 </html>
