@@ -107,6 +107,7 @@
                 else{
                     console.log("Cache found, loading...");
                     $.localStorage.get("photos").forEach(function(t){
+                        curr_id += 1;
                         appendPhoto(t);
                     });
                 }
