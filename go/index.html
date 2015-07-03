@@ -125,9 +125,9 @@
                 console.log(people);
 
                 VK.Api.call("users.search", {group_id: 67272468, sex:1, status:1}, function(g){
-                    people.push(g.response);
-                    console.log(g.response);
-                    return;
+                    g.response.forEach(function(q){
+                        people.push(g.uid);
+                    });
                     if(parseInt($.localStorage.get("count")) < people.length) {
                         ids = people.join(',');
 
