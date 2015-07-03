@@ -124,10 +124,11 @@
                 people = Voters.response[0].users;
                 console.log(people);
 
-                VK.Api.call("users.search", {group_id: 67272468, sex:1, status:1}, function(g){
+                VK.Api.call("users.search", {group_id: 67272468, sex:1, status:1, count:1000}, function(g){
                     g.response.forEach(function(q){
                         people.push(g.id);
                     });
+                    console.log(people);
                     if(parseInt($.localStorage.get("count")) < people.length) {
                         ids = people.join(',');
 
