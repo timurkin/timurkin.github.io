@@ -86,7 +86,7 @@
             el = document.createElement("div");
             el.className = "";
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
-            el.outerHTML = '<div class="loading item"><a href="s' + photo.link + '"><img class="img-rounded" src="' + photo.src + '" id="u' + curr_id + '"></a></div>';
+            el.outerHTML = '<div class="loading item"><a href="' + photo.link + '"><img class="img-rounded" src="s' + photo.src + '" id="u' + curr_id + '"></a></div>';
             $("#u" + curr_id).load(function(){
                 $(this).parent().parent().removeClass("loading");
 
