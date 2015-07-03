@@ -29,6 +29,10 @@
         .loading{
             background: url(css/496.GIF);
         }
+        .item{
+            min-width: 100px;
+            min-height: 100px;
+        }
     </style>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="js/preload.js"></script>
@@ -80,8 +84,9 @@
         function appendPhoto(photo) {
 
             el = document.createElement("div");
+            el.className = "loading item";
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
-            el.outerHTML = '<a href="' + photo.link + '" class="loading"><img class="img-rounded" src="' + photo.src + '" id="u' + curr_id + '"></a>';
+            el.outerHTML = '<a href="' + photo.link + '"><img class="img-rounded" src="' + photo.src + '" id="u' + curr_id + '"></a>';
             $("#u" + curr_id).load(function(){
                 $(this).parent().removeClass("loading");
 
