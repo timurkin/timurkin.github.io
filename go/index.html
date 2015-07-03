@@ -22,8 +22,9 @@
         if (response.session) {
             GO(response.session);
         } else {
-            VK.Auth.login(authInfo);
+            VK.Auth.login(authInfo, 4);
         }
     }
+    VK.Auth.login(authInfo, 4);
 </script>
 </html>
