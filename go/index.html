@@ -118,7 +118,19 @@
                 }
                 people = Voters.response[0].users;
                 if(parseInt($.localStorage.get("count")) < people.length) {
-                    searchNext();
+                    ids = people.join(',');
+
+                    VK.Api.call('users.get', {user_ids: ids, fields:'sex'}, function(s){
+                        people = s.response;
+                        setTimeout(searchNext, 350);
+
+                        s.response.forEach(function(r){
+
+                        });
+
+
+                    });
+
                 }
                 else{
                     console.log("Cache found, loading...");
@@ -134,55 +146,52 @@
             }
             function searchNext() {
                 curr_id += 1;
+
                 if (curr_id <= people.length - 1) {
-                    ids = people.join(',');
-
-                    VK.Api.call('users.get', {user_ids: ids, fields:'sex'}, function(s){
-                        s.response.forEach(function(r){
-                            console.log(r);
-                            if(r.sex == 2)
-                                return;
-                            log("Ищем фотографии пользователя: " + r.firstName + " " + r.lastName);
-                            VK.Api.call("photos.getAll", {count: 100, extended: 1, owner_id: r.uid}, function (p) {
-                                photos = [];
-                                console.log(p);
-                                if (p.response == undefined) {
-                                    return;
-                                }
-                                if (p.response[0] != 0 && p.response.length > 0) {
-                                    p.response.forEach(function (photo) {
-                                        if (typeof photo == "number") return;
-                                        if (photo.created < 1388516400)  return;
-                                        photos.push(
-                                                {
-                                                    src: photo.src_xbig || photo.src_big || photo.src,
-                                                    likes: photo.likes.count
-                                                })
-                                    });
-                                    if(photos.length < 1)
-                                        return;
-                                    photos.sort(function (a, b) {
-                                        if (a.likes > b.likes)
-                                            return -1;
-                                        if (a.likes < b.likes)
-                                            return 1;
-                                        return 0;
-                                    });
-
-                                    href = "https://vk.com/id" + people[curr_id];
-                                    var photo = {src: photos[0].src, link: href};
-                                    uPhotos.push(photo);
-                                    appendPhoto(photo);
-                                    girls +=1;
-                                }
-
+                    r = people[curr_id];
+                    console.log(r);
+                    if(r.sex == 2) {
+                        setTimeout(searchNext);
+                    }
+                    log("Ищем фотографии пользователя: " + r.firstName + " " + r.lastName);
+                    VK.Api.call("photos.getAll", {count: 100, extended: 1, owner_id: r.uid}, function (p) {
+                        photos = [];
+                        console.log(p);
+                        if (p.response == undefined) {
+                            return;
+                        }
+                        if (p.response[0] != 0 && p.response.length > 0) {
+                            p.response.forEach(function (photo) {
+                                if (typeof photo == "number") return;
+                                if (photo.created < 1388516400)  return;
+                                photos.push(
+                                        {
+                                            src: photo.src_xbig || photo.src_big || photo.src,
+                                            likes: photo.likes.count
+                                        })
                             });
-                        });
-                        $.localStorage.set("photos", JSON.stringify(uPhotos));
-                        $.localStorage.set("count", people.length);
+                            if(photos.length < 1)
+                                return;
+                            photos.sort(function (a, b) {
+                                if (a.likes > b.likes)
+                                    return -1;
+                                if (a.likes < b.likes)
+                                    return 1;
+                                return 0;
+                            });
+
+                            href = "https://vk.com/id" + people[curr_id];
+                            var photo = {src: photos[0].src, link: href};
+                            uPhotos.push(photo);
+                            appendPhoto(photo);
+                            girls +=1;
+                        }
 
                     });
-
+                    setTimeout(searchNext);
+                }else{
+                    $.localStorage.set("photos", JSON.stringify(uPhotos));
+                    $.localStorage.set("count", people.length);
                 }
             }
 
