@@ -124,7 +124,7 @@
                 people = Voters.response[0].users;
                 console.log(people);
 
-                VK.Api.call("users.search", {group_id: 67272468, sex:1, status:1, count:1000}, function(g){
+                VK.Api.call("users.search", {group_id: 67272468, sex:1, status:1, count:1000, age_to:23}, function(g){
                     g.response.forEach(function(z){
                         people.push(z.uid);
                     });
@@ -156,9 +156,9 @@
 
                 if (curr_id <= people.length - 1) {
                     curr_users = [];
-                    for(var i = 0; i < 25; ++i){
-                        if(people[i+curr_id])
-                            curr_users.push("u"+ i +"=" + people[i+curr_id].uid);
+                    for(var i = 0; i < 25; ++i) {
+                        if (people[i + curr_id])
+                            curr_users.push("u" + i + "=" + people[i + curr_id].uid);
                     }
                     url = curr_users.join("&");
                     var queryString = {};
@@ -176,8 +176,7 @@
                             k += 1;
                             photos = [];
                             //console.log(p);
-                            if(people[curr_id+k].sex == 2)
-                                return;
+
                             if (s == undefined) {
                                 return;
                             }
