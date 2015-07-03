@@ -168,6 +168,7 @@
                                 s.forEach(function (photo) {
                                     if (typeof photo == "number") return;
                                     if (photo.created < 1388516400)  return;
+                                    console.log(photo);
                                     photos.push(
                                             {
                                                 src: photo.src_xbig || photo.src_big || photo.src,
