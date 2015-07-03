@@ -126,7 +126,7 @@
 
                 VK.Api.call("users.search", {group_id: 67272468, sex:1, status:1, count:1000}, function(g){
                     g.response.forEach(function(z){
-                        people.push(z.id);
+                        people.push(z.uid);
                     });
                     console.log(people);
                     if(parseInt($.localStorage.get("count")) < people.length) {
