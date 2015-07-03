@@ -29,6 +29,10 @@
 </head>
 <body>
 <div class="container">
+    <br><br><br>
+    <div class="auth">
+        <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
+    </div>
     <div id="items-content" class="row" data-columns>
         <div></div>
     </div>
@@ -39,6 +43,7 @@
     var curr_id =0;
     var uPhotos = [];
     $(document).ready(function () {
+
         if($.localStorage.get("count") == undefined){
             $.localStorage.set("count", 0);
         }
@@ -51,7 +56,8 @@
             if (response.session) {
                 GO(response.session);
             } else {
-                VK.Auth.login(authInfo, 4);
+                VK.UI.button('login_button');
+                
             }
         });
 
