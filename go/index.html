@@ -37,8 +37,11 @@
 </div>
 </body>
 <script type="text/javascript">
+
     $(document).ready(function () {
-        var $grid = $("#items-content");
+        if($.cookie("number") == undefined){
+            $.cookie("number", 0);  
+        }
         var people = [];
         var curr_id = -1;
         var $uPhotos = [];
