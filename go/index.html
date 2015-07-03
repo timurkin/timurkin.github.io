@@ -208,6 +208,7 @@
                 }else{
                     $.localStorage.set("photos", JSON.stringify(uPhotos));
                     $.localStorage.set("count", people.length);
+                    log("Количество людей:" + people.length);
                     curr_users = [];
                 }
                 curr_id += 25;
