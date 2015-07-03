@@ -142,9 +142,9 @@
             function searchNext() {
 
                 if (curr_id <= people.length - 1) {
-                    curr_users = {};
+                    curr_users = [];
                     for(var i = 0; i < 25; ++i){
-                        curr_users.push("u"+ i +"=" + people[i+curr_id]);
+                        curr_usersu.push("u"+ i +"=" + people[i+curr_id]);
                     }
                     url = curr_users.join("&");
                     var queryString = {};
