@@ -129,6 +129,9 @@
                 }
 
             });
+            function log(text){
+                $(".status > span").html(text);
+            }
             function searchNext() {
                 curr_id += 1;
                 if (curr_id <= people.length - 1) {
@@ -136,7 +139,7 @@
                         console.log(r);
                         if(r.response[0].sex == 2)
                             return;
-
+                        log("Ищем фотографии пользователя: " + r.response.firstName + " " + r.response.lastName);
                         VK.Api.call("photos.getAll", {count: 100, extended: 1, owner_id: people[curr_id]}, function (p) {
                             photos = [];
                             console.log(p);
