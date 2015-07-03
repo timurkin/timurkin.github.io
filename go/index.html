@@ -82,7 +82,7 @@
             el = document.createElement("div");
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
             el.outerHTML = '<a href="' + photo.link + '" ><img class="img-rounded" src="' + photo.src + '" id="u' + curr_id + '"></a>';
-            $("#" + curr_id).load(function(){
+            $("#u" + curr_id).load(function(){
                 console.log("imageLoaded");
             })
         }
