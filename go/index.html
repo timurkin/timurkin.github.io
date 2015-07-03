@@ -39,7 +39,7 @@
 <script type="text/javascript">
     var people = [];
     var curr_id = -1;
-    var $uPhotos = [];
+    var uPhotos = [];
     $(document).ready(function () {
         if($.cookie("count") == undefined){
             $.cookie("count", 0);
@@ -92,8 +92,8 @@
                     searchNext();
                 else{
                     console.log("БОЛЬШЕ ЖЕ:::");
-                    $uPhotos = JSON.parse($.cookie("photos"));
-                    $uPhotos.forEach(function(t){
+                    uPhotos = JSON.parse($.cookie("photos"));
+                    uPhotos.forEach(function(t){
                         appendPhoto(t);
                     });
                 }
@@ -130,14 +130,14 @@
 
                             href = "https://vk.com/id" + people[curr_id];
                             var photo = {src: photos[0].src, link: href};
-                            $uPhotos.append(photo);
+                            uPhotos.append(photo);
                             appendPhoto(photo);
 
                         }
                         setTimeout(searchNext, 350);
                     });
                 }else{
-                    $.cookie("photos", JSON.stringify($uPhotos));
+                    $.cookie("photos", JSON.stringify(uPhotos));
                     $.cookie("count", people.length);
                 }
             }
