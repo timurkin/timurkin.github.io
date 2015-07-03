@@ -123,12 +123,6 @@
                     VK.Api.call('users.get', {user_ids: ids, fields:'sex'}, function(s){
                         people = s.response;
                         setTimeout(searchNext, 350);
-
-                        s.response.forEach(function(r){
-
-                        });
-
-
                     });
 
                 }
@@ -145,13 +139,15 @@
                 $(".status > span").html(text);
             }
             function searchNext() {
+
                 curr_id += 1;
 
                 if (curr_id <= people.length - 1) {
                     r = people[curr_id];
                     console.log(r);
                     if(r.sex == 2) {
-                        setTimeout(searchNext);
+                        searchNext();
+                        return;
                     }
                     log("Ищем фотографии пользователя: " + r.firstName + " " + r.lastName);
                     VK.Api.call("photos.getAll", {count: 100, extended: 1, owner_id: r.uid}, function (p) {
