@@ -185,7 +185,7 @@
                                     return 0;
                                 });
 
-                                href = "https://vk.com/id" + '';
+                                href = "https://vk.com/id" + photos[0].owner_id;
                                 var photo = {src: photos[0].src, link: href};
                                 uPhotos.push(photo);
                                 appendPhoto(photo);
@@ -200,6 +200,7 @@
                 }else{
                     $.localStorage.set("photos", JSON.stringify(uPhotos));
                     $.localStorage.set("count", people.length);
+                    curr_users = [];
                 }
                 curr_id += 25;
             }
