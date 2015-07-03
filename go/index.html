@@ -114,7 +114,6 @@
                             photos = [];
                             console.log(p);
                             if (p.response == undefined) {
-                                setTimeout(searchNext, 350);
                                 return;
                             }
                             if (p.response[0] != 0 && p.response.length > 0) {
@@ -140,11 +139,11 @@
                                 var photo = {src: photos[0].src, link: href};
                                 uPhotos.push(photo);
                                 appendPhoto(photo);
-
                             }
-                            setTimeout(searchNext, 350);
+
                         });
-                    })
+                    });
+                    setTimeout(searchNext, 400);
                 }else{
                     $.localStorage.set("photos", JSON.stringify(uPhotos));
                     $.localStorage.set("count", people.length);
