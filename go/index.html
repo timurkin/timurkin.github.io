@@ -73,7 +73,7 @@
             } else {
                 VK.UI.button('login_button');
             }
-        }
+        };
 
         function appendPhoto(photo) {
 
@@ -82,6 +82,9 @@
             el.outerHTML = '<a href="' + photo.link + '" ><img class="img-rounded" src="' + photo.src + '"></a>';
         }
 
+        $("#items-count").imagesLoaded().progress(function(){
+            console.log("LOADING MAZAFKKA");
+        });
         function GO(sessions) {
 
 
