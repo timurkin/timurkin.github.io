@@ -1,10 +1,4 @@
-function authInfo(response) {
-    if (response.session) {
-        GO(response.session);
-    } else {
-        alert('not auth');
-    }
-}
+
 
 function GO(sessions){
 
