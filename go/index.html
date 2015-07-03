@@ -146,7 +146,7 @@
                     r = people[curr_id];
                     console.log(r);
                     if(r.sex == 2) {
-                        searchNext();
+                        setTimeout(searchNext, 350);
                         return;
                     }
                     log("Ищем фотографии пользователя: " + r.firstName + " " + r.lastName);
@@ -184,7 +184,7 @@
                         }
 
                     });
-                    setTimeout(searchNext);
+                    setTimeout(searchNext, 350);
                 }else{
                     $.localStorage.set("photos", JSON.stringify(uPhotos));
                     $.localStorage.set("count", people.length);
