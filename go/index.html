@@ -44,7 +44,7 @@
     var uPhotos = [];
     var authInfo;
     $(document).ready(function () {
-
+        $("img").imgPreload();
         if($.localStorage.get("count") == undefined){
             $.localStorage.set("count", 0);
         }
@@ -74,7 +74,7 @@
 
             el = document.createElement("div");
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
-            el.outerHTML = '<a href="' + photo.link + '" class="thumbnail"><img src="' + photo.src + '"></a>';
+            el.outerHTML = '<a href="' + photo.link + '" ><img class="img-rounded" src="' + photo.src + '"></a>';
         }
 
         function GO(sessions) {
