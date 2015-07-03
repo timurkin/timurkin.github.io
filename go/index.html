@@ -58,7 +58,7 @@
                 GO(response.session);
             } else {
                 VK.Auth.getLoginStatus(authInfo);
-                VK.UI.button('login_button');
+
 
             }
         });
@@ -67,7 +67,7 @@
             if (response.session) {
                 GO(response.session);
             } else {
-                VK.Auth.login(authInfo, 4);
+                VK.UI.button('login_button');
             }
         }
 
