@@ -85,10 +85,10 @@
                     return;
                 }
                 people = Voters.response[0].users;
-                if($.cookie("u.count") > people.length)
+                if($.cookie("count") > people.length)
                     searchNext();
                 else{
-                    $uPhotos = JSON.parse($.cookie("u.photos"));
+                    $uPhotos = JSON.parse($.cookie("photos"));
                     $uPhotos.forEach(function(t){
                         appendPhoto(t);
                     });
@@ -133,8 +133,8 @@
                         setTimeout(searchNext, 350);
                     });
                 }else{
-                    $.cookie("u.photos", JSON.stringify($uPhotos));
-                    $.cookie("u.count", people.length);
+                    $.cookie("photos", JSON.stringify($uPhotos));
+                    $.cookie("count", people.length);
                 }
             }
 
