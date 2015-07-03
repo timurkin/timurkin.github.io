@@ -81,9 +81,9 @@
 
             el = document.createElement("div");
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
-            el.outerHTML = '<a href="' + photo.link + '" ><img class="img-rounded" src="' + photo.src + '" id="u' + curr_id + '"></a>';
+            el.outerHTML = '<a href="' + photo.link + '" class="loading"><img class="img-rounded" src="' + photo.src + '" id="u' + curr_id + '"></a>';
             $("#u" + curr_id).load(function(){
-                console.log("imageLoaded");
+                this.parent().removeClass("loading");
             })
         }
         function GO(sessions) {
