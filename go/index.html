@@ -57,7 +57,7 @@
                 GO(response.session);
             } else {
                 VK.UI.button('login_button');
-                
+
             }
         });
 
@@ -97,9 +97,8 @@
                     $.localStorage.set("count", people.length);
                 }
                 else{
-                    console.log("БОЛЬШЕ ЖЕ:::");
-                    uPhotos = JSON.parse($.localStorage.get("photos"));
-                    uPhotos.forEach(function(t){
+                    console.log("Cache found, loading...");
+                    $.localStorage.get("photos").forEach(function(t){
                         appendPhoto(t);
                     });
                 }
