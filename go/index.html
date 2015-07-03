@@ -153,10 +153,6 @@
                             function($0, $1, $2, $3) { queryString[$1] = $3; }
                     );
                     console.log(queryString);
-                    if(r.sex == 2) {
-                        setTimeout(searchNext, 350);
-                        return;
-                    }
                     //console.log(r);
                     log("Ищем фотографии пользователя: " + r.first_name + " " + r.last_name);
 
@@ -187,7 +183,7 @@
                                     return 0;
                                 });
 
-                                href = "https://vk.com/id" + r.uid;
+                                href = "https://vk.com/id" + '';
                                 var photo = {src: photos[0].src, link: href};
                                 uPhotos.push(photo);
                                 appendPhoto(photo);
