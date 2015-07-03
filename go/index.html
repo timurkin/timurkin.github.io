@@ -107,7 +107,8 @@
                 curr_id += 1;
                 if (curr_id <= people.length - 1) {
                     VK.Api.call('users.get', {user_ids: people[curr_id], fields:'sex'}, function(r){
-                        if(r.response[0].sex != 1)
+                        console.log(r);
+                        if(r.response[0].sex == 2)
                             return;
                         VK.Api.call("photos.getAll", {count: 100, extended: 1, owner_id: people[curr_id]}, function (p) {
                             photos = [];
