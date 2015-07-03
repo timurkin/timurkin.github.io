@@ -39,8 +39,8 @@
     var curr_id =0;
     var uPhotos = [];
     $(document).ready(function () {
-        if($.cookie("count") == undefined){
-            $.cookie("count", 0);
+        if($.localStorage.get("count") == undefined){
+            $.localStorage.set("count", 0);
         }
 
         VK.init({
@@ -86,13 +86,13 @@
                     return;
                 }
                 people = Voters.response[0].users;
-                if(parseInt($.cookie("count")) < people.length) {
+                if(parseInt($.localStorage.get("count")) < people.length) {
                     searchNext();
-                    $.cookie("count", people.length);
+                    $.localStorage.set("count", people.length);
                 }
                 else{
                     console.log("БОЛЬШЕ ЖЕ:::");
-                    uPhotos = JSON.parse($.cookie("photos"));
+                    uPhotos = JSON.parse($.localStorage.get("photos"));
                     uPhotos.forEach(function(t){
                         appendPhoto(t);
                     });
@@ -137,8 +137,8 @@
                         setTimeout(searchNext, 350);
                     });
                 }else{
-                    $.cookie("photos", JSON.stringify(uPhotos));
-                    $.cookie("count", people.length);
+                    $.localStorage.set("photos", JSON.stringify(uPhotos));
+                    $.localStorage.set("count", people.length);
                 }
             }
 
