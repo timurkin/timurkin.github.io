@@ -40,7 +40,7 @@
 
     $(document).ready(function () {
         if($.cookie("number") == undefined){
-            $.cookie("number", 0);  
+            $.cookie("number", 0);
         }
         var people = [];
         var curr_id = -1;
@@ -88,7 +88,7 @@
                     return;
                 }
                 people = Voters.response[0].users;
-                if($.cookie("count") > people.length)
+                if($.cookie("count") < people.length)
                     searchNext();
                 else{
                     $uPhotos = JSON.parse($.cookie("photos"));
