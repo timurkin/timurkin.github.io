@@ -39,8 +39,8 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        if($.cookie("number") == undefined){
-            $.cookie("number", 0);
+        if($.cookie("count") == undefined){
+            $.cookie("count", 0);
         }
         var people = [];
         var curr_id = -1;
@@ -88,7 +88,7 @@
                     return;
                 }
                 people = Voters.response[0].users;
-                if($.cookie("count") < people.length)
+                if(parseInt($.cookie("count")) < people.length)
                     searchNext();
                 else{
                     console.log("БОЛЬШЕ ЖЕ:::");
