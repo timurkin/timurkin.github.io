@@ -42,6 +42,7 @@
     var people = [];
     var curr_id =0;
     var uPhotos = [];
+    var authInfo;
     $(document).ready(function () {
 
         if($.localStorage.get("count") == undefined){
@@ -62,7 +63,7 @@
             }
         });
 
-        function authInfo(response) {
+        authInfo = function(response) {
             if (response.session) {
                 GO(response.session);
             } else {
