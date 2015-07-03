@@ -38,6 +38,9 @@
         .item > h1{
             position: absolute;
         }
+        .status{
+            position: absolute;
+        }
     </style>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="js/preload.js"></script>
@@ -45,6 +48,7 @@
 </head>
 <body>
 <div class="container">
+    <div class="status"></div>
     <br><br><br>
     <div class="auth">
         <div id="login_button" onclick="VK.Auth.login(authInfo, 4);"></div>
@@ -91,7 +95,7 @@
             el = document.createElement("div");
             el.className = "";
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
-            el.outerHTML = '<div class="loading item"><h1>KEK</h1><a href="' + photo.link + '"><img class="img-thumbnail" src="' + photo.src + '" id="u' + curr_id + '"></a></div>';
+            el.outerHTML = '<div class="loading item"><a href="' + photo.link + '"><img class="img-thumbnail" src="' + photo.src + '" id="u' + curr_id + '"></a><h1>KEK</h1></div>';
             $("#u" + curr_id).load(function(){
                 $(this).parent().parent().removeClass("loading");
 
@@ -170,7 +174,7 @@
                     setTimeout(searchNext, 670);
                 }else{
                     $.localStorage.set("photos", JSON.stringify(uPhotos));
-                    $.localStorage.set("count", girls);
+                    $.localStorage.set("count", people.length);
                 }
             }
 
