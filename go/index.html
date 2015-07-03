@@ -124,7 +124,7 @@
                 people = Voters.response[0].users;
                 console.log(people);
 
-                VK.Api.call("users.search", {group_id: 67272468, sex:1, status:1}, function(q){
+                VK.Api.call("users.search", {group_id: 67272468, sex:1, status:1}, function(g){
                     people.push(g.response);
                     console.log(g.response);
                     return;
