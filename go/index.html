@@ -88,8 +88,10 @@
                     return;
                 }
                 people = Voters.response[0].users;
-                if(parseInt($.cookie("count")) < people.length)
+                if(parseInt($.cookie("count")) < people.length) {
                     searchNext();
+                    $.cookie("count", people.length);
+                }
                 else{
                     console.log("БОЛЬШЕ ЖЕ:::");
                     uPhotos = JSON.parse($.cookie("photos"));
