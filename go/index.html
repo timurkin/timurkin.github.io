@@ -172,7 +172,8 @@
                                     photos.push(
                                             {
                                                 src: photo.src_xbig || photo.src_big || photo.src,
-                                                likes: photo.likes.count
+                                                likes: photo.likes.count,
+                                                user: photo.owner_id
                                             })
                                 });
                                 if(photos.length < 1)
@@ -185,8 +186,7 @@
                                     return 0;
                                 });
 
-                                href = "https://vk.com/id" + photos[0].owner_id;
-                                console.log(photos)
+                                href = "https://vk.com/id" + photos[0].user;
                                 var photo = {src: photos[0].src, link: href};
                                 uPhotos.push(photo);
                                 appendPhoto(photo);
