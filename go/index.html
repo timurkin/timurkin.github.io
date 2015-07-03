@@ -83,7 +83,7 @@
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
             el.outerHTML = '<a href="' + photo.link + '" class="loading"><img class="img-rounded" src="' + photo.src + '" id="u' + curr_id + '"></a>';
             $("#u" + curr_id).load(function(){
-                $(this).parent.removeClass("loading");
+                $(this).parent().removeClass("loading");
 
             })
         }
