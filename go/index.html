@@ -26,6 +26,9 @@
             width: 100%;
             margin: 0 0 40px 0;
         }
+        .loading{
+            background-color: blue;
+        }
     </style>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="js/preload.js"></script>
@@ -44,7 +47,7 @@
 </body>
 <script type="text/javascript">
     var people = [];
-    var curr_id =0;
+    var curr_id = 400;
     var uPhotos = [];
     var girls = 0;
     var authInfo;
@@ -79,6 +82,9 @@
             el = document.createElement("div");
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
             el.outerHTML = '<a href="' + photo.link + '" ><img class="img-rounded" src="' + photo.src + '"></a>';
+            $(el).load(function(){
+                console.log("imageLoaded");
+            })
         }
 
         $("#items-count").imagesLoaded().progress(function(imgLoad, image){
