@@ -126,7 +126,7 @@
                         console.log(r);
                         if(r.response[0].sex == 2)
                             return;
-                        girls +=1;
+
                         VK.Api.call("photos.getAll", {count: 100, extended: 1, owner_id: people[curr_id]}, function (p) {
                             photos = [];
                             console.log(p);
@@ -143,7 +143,8 @@
                                                 likes: photo.likes.count
                                             })
                                 });
-
+                                if(photo.length < 1)
+                                    return;
                                 photos.sort(function (a, b) {
                                     if (a.likes > b.likes)
                                         return -1;
@@ -156,6 +157,7 @@
                                 var photo = {src: photos[0].src, link: href};
                                 uPhotos.push(photo);
                                 appendPhoto(photo);
+                                girls +=1;
                             }
 
                         });
