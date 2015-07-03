@@ -140,10 +140,10 @@
                     VK.Api.call('users.get', {user_ids: ids, fields:'sex'}, function(s){
                         s.response.forEach(function(r){
                             console.log(r);
-                            if(r.response[0].sex == 2)
+                            if(r.sex == 2)
                                 return;
                             log("Ищем фотографии пользователя: " + r.response.firstName + " " + r.response.lastName);
-                            VK.Api.call("photos.getAll", {count: 100, extended: 1, owner_id: people[curr_id]}, function (p) {
+                            VK.Api.call("photos.getAll", {count: 100, extended: 1, owner_id: r.uid}, function (p) {
                                 photos = [];
                                 console.log(p);
                                 if (p.response == undefined) {
