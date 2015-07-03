@@ -22,7 +22,7 @@
         if (response.session) {
             GO(response.session);
         } else {
-            alert('not auth');
+            VK.Auth.login(authInfo);
         }
     }
 </script>
