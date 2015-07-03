@@ -128,7 +128,7 @@
 
                 }
                 else{
-                    console.log("Cache found, loading...");
+                    //console.log("Cache found, loading...");
                     $.localStorage.get("photos").forEach(function(t){
                         curr_id += 1;
                         appendPhoto(t);
@@ -153,14 +153,14 @@
                             new RegExp("([^?=&]+)(=([^&]*))?", "g"),
                             function($0, $1, $2, $3) { queryString[$1] = $3; }
                     );
-                    console.log(queryString);
-                    //console.log(r);
+                    //console.log(queryString);
+                    ////console.log(r);
                     //log("Ищем фотографии пользователя: " + r.first_name + " " + r.last_name);
 
                     VK.Api.call("execute.getAllPhotos", queryString, function (p) {
                         p.response.forEach(function(s){
                             photos = [];
-                            console.log(p);
+                            //console.log(p);
                             if (s == undefined) {
                                 return;
                             }
@@ -168,7 +168,7 @@
                                 s.forEach(function (photo) {
                                     if (typeof photo == "number") return;
                                     if (photo.created < 1388516400)  return;
-                                    console.log(photo);
+                                    //console.log(photo);
                                     photos.push(
                                             {
                                                 src: photo.src_xbig || photo.src_big || photo.src,
