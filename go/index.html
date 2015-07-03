@@ -48,8 +48,9 @@
 
 </head>
 <body>
+<div class="status"><span class="label label-info">TEST</span></div>
 <div class="container">
-    <div class="status"><span class="label label-info">TEST</span></div>
+
     <br><br><br>
     <div class="auth">
         <div id="login_button" onclick="VK.Auth.login(authInfo, 4);"></div>
@@ -158,9 +159,13 @@
                     //log("Ищем фотографии пользователя: " + r.first_name + " " + r.last_name);
 
                     VK.Api.call("execute.getAllPhotos", queryString, function (p) {
+                        var k = 0;
                         p.response.forEach(function(s){
+                            k += 1;
                             photos = [];
                             //console.log(p);
+                            if(people[curr_id+k].sex == 2)
+                                return;
                             if (s == undefined) {
                                 return;
                             }
