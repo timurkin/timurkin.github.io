@@ -154,7 +154,7 @@
                     );
                     console.log(queryString);
                     //console.log(r);
-                    log("Ищем фотографии пользователя: " + r.first_name + " " + r.last_name);
+                    //log("Ищем фотографии пользователя: " + r.first_name + " " + r.last_name);
 
                     VK.Api.call("execute.getAllPhotos", queryString, function (p) {
                         p.response.forEach(function(s){
