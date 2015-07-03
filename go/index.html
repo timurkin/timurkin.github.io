@@ -37,14 +37,14 @@
 </div>
 </body>
 <script type="text/javascript">
-
+    var people = [];
+    var curr_id = -1;
+    var $uPhotos = [];
     $(document).ready(function () {
         if($.cookie("count") == undefined){
             $.cookie("count", 0);
         }
-        var people = [];
-        var curr_id = -1;
-        var $uPhotos = [];
+
         VK.init({
             apiId: 4981357
         });
