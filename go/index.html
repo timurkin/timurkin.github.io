@@ -156,7 +156,7 @@
                     );
                     //console.log(queryString);
                     ////console.log(r);
-                    //log("Ищем фотографии пользователя: " + r.first_name + " " + r.last_name);
+
 
                     VK.Api.call("execute.getAllPhotos", queryString, function (p) {
                         var k = 0;
@@ -169,6 +169,7 @@
                             if (s == undefined) {
                                 return;
                             }
+                            log("Ищем фотографии пользователя: " + people[curr_id+k].first_name + " " + people[curr_id+k].last_name);
                             if (s[0] != 0 && s.length > 0) {
                                 s.forEach(function (photo) {
                                     if (typeof photo == "number") return;
