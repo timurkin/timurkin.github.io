@@ -149,7 +149,8 @@
                         setTimeout(searchNext, 350);
                         return;
                     }
-                    log("Ищем фотографии пользователя: " + r.firstName + " " + r.lastName);
+                    //console.log(r);
+                    log("Ищем фотографии пользователя: " + r.first_name + " " + r.last_name);
                     VK.Api.call("photos.getAll", {count: 100, extended: 1, owner_id: r.uid}, function (p) {
                         photos = [];
                         console.log(p);
@@ -176,7 +177,7 @@
                                 return 0;
                             });
 
-                            href = "https://vk.com/id" + people[curr_id];
+                            href = "https://vk.com/id" + r.uid];
                             var photo = {src: photos[0].src, link: href};
                             uPhotos.push(photo);
                             appendPhoto(photo);
