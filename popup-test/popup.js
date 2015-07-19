@@ -14,7 +14,7 @@ link.addEventListener("click", function(a){
 var xhr = new XMLHttpRequest();
 xhr.open("GET", "test.json");
 xhr.onload = function(e){
-    Feed = JSON.parse(xhr.target.responseText);
+    Feed = JSON.parse(e.target.responseText);
     currentID = 0;
     loadPost();
 };
