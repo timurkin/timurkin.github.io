@@ -18,6 +18,7 @@ xhr.onload = function(e){
     currentID = 0;
     loadPost();
 };
+xhr.send();
 //chrome.runtime.sendMessage({get: 1}, function(r){
 //    Feed = r.feed;
 //    currentID = 0;
