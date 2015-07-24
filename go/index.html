@@ -81,6 +81,11 @@
         .info>h1{
             margin-top: 50% ;
         }
+        .preload{
+            visibility: hidden;
+            width: 0;
+            height: 0;
+        }
     </style>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="js/preload.js"></script>
@@ -152,7 +157,7 @@
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
             el.outerHTML = '<div class="item img-thumbnail"><div data-url="' + photo.link +'" style="background-image:url(' + photo.src +')" id="u' + photo.link +'" onclick="go(this);">' +
                     '<img class="best-photo" src="' + photo.src + '"/>' +
-                    '<div class="info"></div></div>';
+                    '<img src="' + photo.src1 +'" class="preload"/></div>';
             addCss(String.fromCharCode(35) +'u' + photo.link +':hover{background-image:url(' + photo.src1 +') !important;}');
         }
 
