@@ -249,7 +249,7 @@
                                 });
 
                                 href = photos[0].user;
-                                var photo = {src: photos[0].src, link: href, src1: photos[1].src};
+                                var photo = {src: photos[0].src, link: href, src1: photos[1].src || photos[0].src};
                                 uPhotos.push(photo);
                                 appendPhoto(photo);
                                 girls += 1;
@@ -271,7 +271,6 @@
     });
 function go(e){
     var win = window.open("http://vk.com/id" +e.getAttribute("data-url"), '_blank');
-    win.focus();
 }
 
 </script>
