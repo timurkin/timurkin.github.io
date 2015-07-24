@@ -98,6 +98,18 @@
     var uPhotos = [];
     var girls = 0;
     var authInfo;
+
+    function addCss(cssCode) {
+        var styleElement = document.createElement("style");
+        styleElement.type = "text/css";
+        if (styleElement.styleSheet) {
+            styleElement.styleSheet.cssText = cssCode;
+        } else {
+            styleElement.appendChild(document.createTextNode(cssCode));
+        }
+        document.getElementsByTagName("head")[0].appendChild(styleElement);
+    }
+
     $(document).ready(function () {
         if ($.localStorage.get("count") == undefined) {
             $.localStorage.set("count", 0);
@@ -130,10 +142,8 @@
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
             el.outerHTML = '<div class="item img-thumbnail"><div data-url="' + photo.link +'" style="background-image:url(' + photo.src +')" id="u' + photo.link +'" onclick="go(this);">' +
                     '<img class="best-photo" src="' + photo.src + '"/>' +
-                            
-                             '<style>'+ String.fromCharCode(35) +'u' + photo.link +':hover{background-image:url(' + photo.src +') !important;}</style>'+
-                    '</div></div>';
-
+                    '</div>';
+            addCss(String.fromCharCode(35) +'u' + photo.link +':hover{background-image:url(' + photo.src +') !important;}');
         }
 
         function GO(sessions) {
