@@ -112,12 +112,12 @@
         };
 
         function appendPhoto(photo) {
-
             el = document.createElement("div");
             el.className = "";
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
-            el.outerHTML = '<div class="item img-thumbnail" data-url="' + photo.link +'" style="background-image:url(' + photo.src +')">' +
-                    '<img class="best-photo" src="' + photo.src + '" id="u' + curr_id + '"/>' +
+            el.outerHTML = '<div class="item img-thumbnail" data-url="' + photo.link +'" style="background-image:url(' + photo.src +')" id="' + photo.link +'"> ' +
+                    '<img class="best-photo" src="' + photo.src + '"/>' +
+                            + '<style>\#'+ photo.link +':hover{background-image:url(' + 'https://pp.vk.me/c627120/v627120910/5114/AX3V-aTat98.jpg' +')}</style>'+
                     '</div>';
         }
 
@@ -206,7 +206,7 @@
                                     return 0;
                                 });
 
-                                href = "https://vk.com/id" + photos[0].user;
+                                href = photos[0].user;
                                 var photo = {src: photos[0].src, link: href};
                                 uPhotos.push(photo);
                                 appendPhoto(photo);
