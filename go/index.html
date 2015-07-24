@@ -128,12 +128,12 @@
             el = document.createElement("div");
             el.className = "";
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
-            el.outerHTML = '<div class="item img-thumbnail"><div data-url="' + photo.link +'" style="background-image:url(' + photo.src +')" id="u' + photo.link +'"> ' +
+            el.outerHTML = '<div class="item img-thumbnail"><div data-url="' + photo.link +'" style="background-image:url(' + photo.src +')" id="u' + photo.link +'" onclick="go(this);">' +
                     '<img class="best-photo" src="' + photo.src + '"/>' +
                             + '<div class="user-info">24 goda</div>' +
                              '<style>'+ String.fromCharCode(35) +'u' + photo.link +':hover{background-image:url(' + photo.src +') !important;}</style>'+
                     '</div></div>';
-            console.log(el.outerHTML);
+
         }
 
         function GO(sessions) {
@@ -240,7 +240,9 @@
 
         }
     });
-
+function go(e){
+    e.getAttribute("data-url");
+}
 
 </script>
 <script src="http://peretz74.ru/assets/js/salvattore.js"></script>
