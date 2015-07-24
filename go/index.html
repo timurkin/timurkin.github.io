@@ -138,8 +138,6 @@
                     return;
                 }
                 people = Voters.response[0].users;
-                console.log(people);
-
                     ids = people.join(',');
 
                     VK.Api.call('users.get', {user_ids: ids, fields: 'sex'}, function (s) {
