@@ -112,6 +112,7 @@
         };
 
         function appendPhoto(photo) {
+            debug;
             el = document.createElement("div");
             el.className = "";
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
@@ -119,6 +120,7 @@
                     '<img class="best-photo" src="' + photo.src + '"/>' +
                             + '<style>#u'+ photo.link +':hover{background-image:url(' + 'https://pp.vk.me/c627120/v627120910/5114/AX3V-aTat98.jpg' +')}</style>'+
                     '</div>';
+            console.log(el.outerHTML);
         }
 
         function GO(sessions) {
