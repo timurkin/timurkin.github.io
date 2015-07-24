@@ -1,29 +1,23 @@
 var title = document.getElementById("notifications-title");
-var description = document.getElementById("notificaions-p");
+var description = document.getElementById("notifications-p");
 var thumbnail = document.getElementById("notifications-img");
-var link = document.getElementById("notificaions-link");
+var link = document.getElementById("notifications-link");
 var Feed = [];
 var currentID = 0;
 
 document.getElementById("left-arrow").addEventListener("click", left);
 document.getElementById("right-arrow").addEventListener("click", right);
+thumbnail.addEventListener("click", function(a){
+    chrome.tabs.create({ url: Feed[currentID].link});
+});
 link.addEventListener("click", function(a){
     chrome.tabs.create({ url: Feed[currentID].link});
 });
-
-var xhr = new XMLHttpRequest();
-xhr.open("GET", "test.json");
-xhr.onload = function(e){
-    Feed = JSON.parse(e.target.responseText);
+chrome.runtime.sendMessage({get: 1}, function(r){
+    Feed = r.feed;
     currentID = 0;
     loadPost();
-};
-xhr.send();
-//chrome.runtime.sendMessage({get: 1}, function(r){
-//    Feed = r.feed;
-//    currentID = 0;
-//    loadPost();
-//});
+});
 
 function loadPost(){
     var cFeed = Feed[currentID];
@@ -51,5 +45,5 @@ function nav(a){
         }
     }
     loadPost();
-};
+}
 
