@@ -134,7 +134,6 @@
                 people = Voters.response[0].users;
                 console.log(people);
 
-                if (parseInt($.localStorage.get("count")) < people.length) {
                     ids = people.join(',');
 
                     VK.Api.call('users.get', {user_ids: ids, fields: 'sex'}, function (s) {
@@ -142,14 +141,7 @@
                         setTimeout(searchNext, 350);
                     });
 
-                }
-                else {
-                    //console.log("Cache found, loading...");
-                    $.localStorage.get("photos").forEach(function (t) {
-                        curr_id += 1;
-                        appendPhoto(t);
-                    });
-                }
+
 
 
             });
@@ -188,7 +180,6 @@
                                 return;
                             }
                             console.log(people[curr_id + k]);
-                            log("Ищем фотографии пользователя: " + people[curr_id + k].first_name + " " + people[curr_id + k].last_name);
                             if (s[0] != 0 && s.length > 0) {
                                 s.forEach(function (photo) {
                                     if (typeof photo == "number") return;
@@ -224,8 +215,6 @@
 
                     setTimeout(searchNext, 350);
                 } else {
-                    $.localStorage.set("photos", JSON.stringify(uPhotos));
-                    $.localStorage.set("count", people.length);
                     log("Количество людей:" + people.length);
                     curr_users = [];
                 }
