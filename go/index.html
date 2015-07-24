@@ -112,7 +112,6 @@
         };
 
         function appendPhoto(photo) {
-            debug;
             el = document.createElement("div");
             el.className = "";
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
@@ -183,7 +182,7 @@
                             if (s == undefined) {
                                 return;
                             }
-                            console.log(people[curr_id + k]);
+                            //console.log(people[curr_id + k]);
                             if (s[0] != 0 && s.length > 0) {
                                 s.forEach(function (photo) {
                                     if (typeof photo == "number") return;
