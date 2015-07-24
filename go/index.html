@@ -162,7 +162,7 @@
             el.outerHTML = '<div class="item img-thumbnail"><div data-url="' + photo.link +'" style="background-image:url(' + photo.src +')" id="u' + photo.link +'" onclick="go(this);">' +
                     '<img class="best-photo" src="' + photo.src + '"/>' +
                     '<img src="' + photo.src1 +'" class="preload"/></div>';
-            addCss(String.fromCharCode(35) +'u' + photo.link +':hover{background-image:url(' + photo.src1 +') !important;background-color: #c7b39b !important;}');
+            addCss(String.fromCharCode(35) +'u' + photo.link +':hover{background-image:url(' + photo.src1 +') !important;background-color: rgba(0,0,0, 0.3) !important;}');
         }
 
         function GO(sessions) {
