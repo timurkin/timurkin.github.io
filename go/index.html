@@ -67,6 +67,14 @@
         .item{
             width: 100%;
             margin-bottom: 30px;
+            cursor: pointer;
+        }
+        .info{
+            visibility: hidden;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.3);
+            width: 100%;
+            height: 100%;
         }
     </style>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -139,7 +147,7 @@
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
             el.outerHTML = '<div class="item img-thumbnail"><div data-url="' + photo.link +'" style="background-image:url(' + photo.src +')" id="u' + photo.link +'" onclick="go(this);">' +
                     '<img class="best-photo" src="' + photo.src + '"/>' +
-                    '</div>';
+                    '<div class="info"></div></div>';
             addCss(String.fromCharCode(35) +'u' + photo.link +':hover{background-image:url(' + photo.src +') !important;}');
         }
 
@@ -248,7 +256,8 @@
         }
     });
 function go(e){
-    e.getAttribute("data-url");
+    var win = window.open(e.getAttribute("data-url"), '_blank');
+    win.focus();
 }
 
 </script>
