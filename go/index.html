@@ -88,9 +88,6 @@
     var appendCss = function(styles){
         var css = document.createElement('style');
         css.type = 'text/css';
-
-
-
         if (css.styleSheet) css.styleSheet.cssText = styles;
         else css.appendChild(document.createTextNode(styles));
     };
@@ -125,11 +122,8 @@
             el.className = "";
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
             el.outerHTML = '<div class="item img-thumbnail" data-url="' + photo.link +'" style="background-image:url(' + photo.src +')" id="u' + photo.link +'"> ' +
-                    '<img class="best-photo" src="' + photo.src + '"/>' +
-                            +
-                    '</div>';
+                    '<img class="best-photo" src="' + photo.src + '"/></div>';
             appendCss(String.fromCharCode(35) + 'u' + photo.link +':hover{background-image:url(' + 'https://pp.vk.me/c627120/v627120910/5114/AX3V-aTat98.jpg' +')}');
-            console.log(el.outerHTML);
         }
 
         function GO(sessions) {
