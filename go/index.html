@@ -52,6 +52,9 @@
             z-index: 100;
             cursor: pointer;
         }
+        .best-photo{
+            visibility: hidden;
+        }
     </style>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="js/preload.js"></script>
@@ -110,11 +113,9 @@
             el = document.createElement("div");
             el.className = "";
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
-            el.outerHTML = '<div class="loading item"><a href="' + photo.link + '"><img class="img-thumbnail" src="' + photo.src + '" id="u' + curr_id + '"></a></div>';
-            $("#u" + curr_id).load(function () {
-                $(this).parent().parent().removeClass("loading");
-
-            });
+            el.outerHTML = '<div class="item img-thumbnail" data-url="' + photo.link +'" style="background-image:url(' + photo.src +')">' +
+                    '<img class="best-photo" src="' + photo.src + '" id="u' + curr_id + '"/>' +
+                    '</div>';
         }
 
         function GO(sessions) {
