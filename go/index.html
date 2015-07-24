@@ -58,8 +58,8 @@
         .img-thumbnail{
             background-size: 100%;
         }
-        #u146373358:hover{
-            background-image: url(https://pp.vk.me/c624224/v624224910/4278b/RL7_YUoZUHc.jpg);
+        .img-thumbnail > div{
+            background-size: 100%;
         }
     </style>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -118,10 +118,10 @@
             el = document.createElement("div");
             el.className = "";
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
-            el.outerHTML = '<div class="item img-thumbnail" data-url="' + photo.link +'" style="background-image:url(' + photo.src +')" id="u' + photo.link +'"> ' +
+            el.outerHTML = '<div class="item img-thumbnail"><div data-url="' + photo.link +'" style="background-image:url(' + photo.src +')" id="u' + photo.link +'"> ' +
                     '<img class="best-photo" src="' + photo.src + '"/>' +
                              '<style>'+ String.fromCharCode(35) +'u' + photo.link +':hover{background-image:url(' + 'https://pp.vk.me/c627120/v627120910/5114/AX3V-aTat98.jpg' +')}</style>'+
-                    '</div>';
+                    '</div></div>';
             console.log(el.outerHTML);
         }
 
