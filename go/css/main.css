@@ -1,0 +1,65 @@
+@media (min-width: 1px) and (max-width: 767px) {
+    #items-content[data-columns]::before {
+        content: '1 .col-xs-12';
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    #items-content[data-columns]::before {
+        content: '2 .col-sm-6';
+    }
+}
+
+@media (min-width: 992px) and (max-width: 9999px) {
+    #items-content[data-columns]::before {
+        content: '3 .col-md-4';
+    }
+}
+
+img {
+    width: 100%;
+}
+
+.loading {
+    background: url(../css/496.GIF) no-repeat center;
+}
+
+.status {
+    position: fixed;
+    left: 5px;
+    z-index: 100;
+    cursor: pointer;
+}
+.img-thumbnail > div{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.img-thumbnail > div:hover{
+
+}
+.img-thumbnail > * > img.best-photo{
+    visibility: hidden;
+}
+.item{
+    width: 100%;
+    cursor: pointer;
+}
+.preload{
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+.info{
+    position: absolute;
+    visibility: hidden;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.img-thumbnail:hover .info{
+    visibility: visible;
+}
+.img-thumbnail{
+    margin-bottom: 10px;
+}
