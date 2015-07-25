@@ -73,6 +73,10 @@
             cursor: pointer;
 
         }
+        .img-thumbnail > div:hover .info{
+            visibility: visible;
+            
+        }
         .info{
             visibility: hidden;
             position: absolute;
@@ -81,6 +85,9 @@
             right: 0;
             background-color: rgba(0, 0, 0, 0.3);
             text-align: center;
+        }
+        .info>img{
+            width: 30%;
         }
         .info>h1{
             margin-top: 50% ;
@@ -130,6 +137,7 @@
     }
 
     $(document).ready(function () {
+        var k = 0;
         if ($.localStorage.get("count") == undefined) {
             $.localStorage.set("count", 0);
         }
@@ -160,8 +168,8 @@
             el.className = "";
             salvattore.appendElements(document.querySelector("#items-content"), [el]);
             el.outerHTML = '<div class="item img-thumbnail"><div data-url="' + photo.link +'" style="background-image:url(' + photo.src +')" id="u' + photo.link +'" onclick="go(this);">' +
-                    '<img class="best-photo" src="' + photo.src + '"/>' +
-                    '<img src="' + photo.src1 +'" class="preload"/></div>';
+                    '<img class="best-photo" src="' + photo.src + '"/><img src="' + photo.src1 +'" class="preload"/>' +
+                    '<div class="info"><img src="' + photo.src +'"/></div></div>';
             addCss(String.fromCharCode(35) +'u' + photo.link +':hover{background-image:url(' + photo.src1 +') !important;background-color: rgba(0,0,0, 0.3) !important;}');
         }
 
@@ -216,18 +224,20 @@
 
 
                     VK.Api.call("execute.getAllPhotos", queryString, function (p) {
-                        var k = 0;
+
                         p.response.forEach(function (s) {
-                            k += 1;
+
                             photos = [];
                             //console.log(p);
 
                             if (s == undefined) {
+
                                 return;
                             }
                             //console.log(people[curr_id + k]);
                             if (s[0] != 0 && s.length > 0) {
                                 s.forEach(function (photo) {
+                                    k += 1;
                                     if (typeof photo == "number") return;
                                     if (photo.created < 1388516400)  return;
                                     //console.log(photo);
