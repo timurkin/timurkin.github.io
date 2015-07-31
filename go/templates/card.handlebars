@@ -1,7 +1,15 @@
-<div class="img-thumbnail">
-    <div data-url="{{user.id}}" style="background-image:url({{photos.0.src}})" id="u{{user.id}}" onclick="go(this);" class="">
-        <img class="best-photo" src="{{photos.0.src}}"/>
-        <img src="{{photos.1.src}}" class="preload"/>
-        <div class="info">KEK</div>
+<div class="row">
+    <div class="col-md-4">
+        <img src="{{photos.0.src}}" />
+    </div>
+    <div class="col-md-8">
+        <img src="{{photos.0.src}}" class="best-photo"/>
+        <div class="photos-wrapper">
+            <div class="photos">
+                {{#each photos}}
+                    <img sdata-original="{{src}}" class="lazy-image" />
+                {{/each}}
+            </div>
+        </div>
     </div>
 </div>

@@ -5,26 +5,16 @@ var uPhotos = [];
 var girls = 0;
 var authInfo;
 
-function addCss(cssCode) {
-    var styleElement = document.createElement("style");
-    styleElement.type = "text/css";
-    if (styleElement.styleSheet) {
-        styleElement.styleSheet.cssText = cssCode;
-    } else {
-        styleElement.appendChild(document.createTextNode(cssCode));
-    }
-    document.getElementsByTagName("head")[0].appendChild(styleElement);
-}
 
 $(document).ready(function () {
+
     $.get("./templates/card.handlebars", function(templateHTML){
+
+
         var cardTemplate = Handlebars.compile(templateHTML);
 
-        var k = 0;
+        var k = -1;
         var appInfo = {};
-        if ($.localStorage.get("count") == undefined) {
-            $.localStorage.set("count", 0);
-        }
         if(document.domain == "timurkin.github.io")
             appInfo.apiId = 4981357;
         else if(document.domain == "localhost")
@@ -50,17 +40,13 @@ $(document).ready(function () {
         };
 
         function appendPhoto(photo) {
-            el = document.createElement("div");
-            el.className = "";
-            salvattore.appendElements(document.querySelector("#items-content"), [el]);
-            el.outerHTML = cardTemplate(photo);
+           $("#items-content").append(cardTemplate(photo));
         }
 
         function GO(sessions) {
 
 
             var s = document.querySelector(".s1");
-
             VK.Api.call('polls.getVoters', {
                 owner_id: '-67272468',
                 poll_id: 189812804,
@@ -71,9 +57,13 @@ $(document).ready(function () {
                     return;
                 }
                 people = Voters.response[0].users;
+                people.shift();
                 ids = people.join(',');
+                var params = {user_ids: ids, fields: 'sex'};
 
-                VK.Api.call('users.get', {user_ids: ids, fields: 'sex'}, function (s) {
+
+
+                VK.Api.call('users.get', params, function (s) {
                     people = s.response;
                     setTimeout(searchNext, 350);
                 });
@@ -102,31 +92,25 @@ $(document).ready(function () {
                             queryString[$1] = $3;
                         }
                     );
-                    //console.log(queryString);
-                    ////console.log(r);
-
 
                     VK.Api.call("execute.getAllPhotos", queryString, function (p) {
-
                         p.response.forEach(function (s) {
-
+                            k += 1;
                             photos = [];
                             //console.log(p);
 
                             if (s == undefined) {
-
                                 return;
                             }
-                            //console.log(people[curr_id + k]);
                             if (s[0] != 0 && s.length > 0) {
                                 s.forEach(function (photo) {
-                                    k += 1;
+
                                     if (typeof photo == "number") return;
                                     if (photo.created < 1388516400)  return;
-                                    //console.log(photo);
+
                                     photos.push(
                                         {
-                                            src: photo.src_xbig || photo.src_big || photo.src,
+                                            src:  photo.src_big || photo.src,
                                             likes: photo.likes.count,
                                             owner: photo.owner_id
                                         })
@@ -142,8 +126,16 @@ $(document).ready(function () {
                                 });
                                 var bestPhoto = photos[0];
                                 href = photos[0].user;
+                                var getUserByID = function(element){
+                                    if(element.uid == bestPhoto.owner)
+                                        return true;
+                                };
+                                var current_user = people.filter(getUserByID)[0];
+
                                 var userObject = {
-                                    id: bestPhoto.owner
+                                    id: bestPhoto.owner,
+                                    fName: current_user.first_name,
+                                    sName: current_user.last_name
                                 };
                                 var photo = {
                                     photos: photos,
@@ -162,6 +154,7 @@ $(document).ready(function () {
                 } else {
                     log("Количество людей:" + people.length);
                     curr_users = [];
+                    $(".lazy-image").lazyload();
                 }
                 curr_id += 25;
             }
@@ -172,4 +165,11 @@ $(document).ready(function () {
 });
 function go(e){
     var win = window.open("http://vk.com/id" +e.getAttribute("data-url"), '_blank');
+}
+
+function loadImages(e){
+
+    $(e).find("img").each(function(){
+        $(this).attr("src", $(this).attr("data-original"));
+    });
 }
