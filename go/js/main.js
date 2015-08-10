@@ -4,8 +4,7 @@ var curr_users = [];
 var uPhotos = [];
 var girls = 0;
 var authInfo;
-
-
+var usersStrng = "";
 $(document).ready(function () {
 
     $.get("./templates/card.handlebars", function(templateHTML){
@@ -40,7 +39,12 @@ $(document).ready(function () {
         };
 
         function appendPhoto(photo) {
-           $("#items-content").append(cardTemplate(photo));
+            if($.localStorage.get(photo.user.id) != null)
+                return;
+            var grid = $("#items-content")[0];
+            var item = document.createElement('div');
+            salvattore['append_elements'](grid, [item]);
+            item.outerHTML = cardTemplate(photo);
         }
 
         function GO(sessions) {
@@ -59,7 +63,7 @@ $(document).ready(function () {
                 people = Voters.response[0].users;
                 people.shift();
                 ids = people.join(',');
-                var params = {user_ids: ids, fields: 'sex'};
+                var params = {user_ids: ids, fields: 'sex,online,photo_100'};
 
 
 
@@ -135,7 +139,9 @@ $(document).ready(function () {
                                 var userObject = {
                                     id: bestPhoto.owner,
                                     fName: current_user.first_name,
-                                    sName: current_user.last_name
+                                    sName: current_user.last_name,
+                                    isOnline: current_user.online,
+                                    avatar: current_user.photo_100
                                 };
                                 var photo = {
                                     photos: photos,
@@ -147,14 +153,13 @@ $(document).ready(function () {
                             }
                         });
 
-
+                        setTimeout(searchNext, 350);
                     });
 
-                    setTimeout(searchNext, 350);
                 } else {
                     log("Количество людей:" + people.length);
                     curr_users = [];
-                    $(".lazy-image").lazyload();
+                    console.log(usersStrng);
                 }
                 curr_id += 25;
             }
@@ -164,7 +169,7 @@ $(document).ready(function () {
 
 });
 function go(e){
-    var win = window.open("http://vk.com/id" +e.getAttribute("data-url"), '_blank');
+    var win = window.open("http://vk.com/id" + e, '_blank');
 }
 
 function loadImages(e){
@@ -172,4 +177,8 @@ function loadImages(e){
     $(e).find("img").each(function(){
         $(this).attr("src", $(this).attr("data-original"));
     });
+}
+function blockUser(id, e){
+    $.localStorage.set(id, 0);
+   $(e).parent().parent().parent().parent().remove();
 }

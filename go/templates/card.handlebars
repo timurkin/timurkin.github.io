@@ -1,14 +1,17 @@
-<div class="row">
-    <div class="col-md-4">
-        <img src="{{photos.0.src}}" />
-    </div>
-    <div class="col-md-8">
-        <img src="{{photos.0.src}}" class="best-photo"/>
-        <div class="photos-wrapper">
-            <div class="photos">
-                {{#each photos}}
-                    <img sdata-original="{{src}}" class="lazy-image" />
-                {{/each}}
+
+<div class="photo" >
+
+    <img src="{{photos.0.src}}" class="lazy-image" />
+    <div class="info" >
+        <div class="name" onclick="go({{user.id}});">
+            <img src="{{user.avatar}}" class="img-circle" style="width: 30%"/>
+
+            <h2>{{user.fName}}  {{user.sName}}{{#if user.isOnline}}<sup><small>Online</small></sup>{{/if}}</h2>
+        </div>
+        <div class="controls">
+            <div class="btn-group">
+                <div class="btn btn-danger" onclick="blockUser({{user.id}}, this);">Скрыть</div>
+                <div class="btn btn-primary">Все фотографии</div>
             </div>
         </div>
     </div>
