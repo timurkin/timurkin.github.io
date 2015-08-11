@@ -192,3 +192,35 @@ div.photo:hover div.info{
 .btn-primary{
     background-color: rgba(0, 102, 135, 0.2);
 }
+
+#top-menu{
+    height: 0;
+    width: 0;
+}
+.settings{
+    visibility: hidden;
+    background-color: rgba(0,0,0, 0.7);
+    position: absolute;
+    top:-200px;
+    height: 200px   ;
+    z-index: 100001;
+    padding: 10px;
+}
+.settings-panel{
+    z-index: 100001;
+    position: fixed;
+    left: 20px;
+    bottom:20px;
+    color: white;
+}
+.settings-panel > span{
+    cursor: pointer;
+    padding: 20px;
+    background-color: rgba(0,0,0,0.7);
+    border: solid 1px white;
+}
+
+.settings-panel:hover .settings{
+    visibility: visible;
+
+}

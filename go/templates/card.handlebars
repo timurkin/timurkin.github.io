@@ -1,7 +1,7 @@
 
 <div class="photo" >
 
-    <img src="{{photos.0.src}}" class="lazy-image" />
+    <img src="{{photos.0.src}}" class="lazy-image" data-isOnline="{{user.isOnline}}"/>
     <div class="info" >
         <div class="name" onclick="go({{user.id}});">
             <img src="{{user.avatar}}" class="img-circle" style="width: 30%"/>

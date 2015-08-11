@@ -5,6 +5,14 @@ var uPhotos = [];
 var girls = 0;
 var authInfo;
 var usersStrng = "";
+var settings = {
+    0: {owner_id: '-67272468',
+        poll_id: 189812804,
+        answer_ids: 627812949,
+        count: 1000},
+    1: {},
+    2: {}
+};
 $(document).ready(function () {
 
     $.get("./templates/card.handlebars", function(templateHTML){
@@ -62,7 +70,12 @@ $(document).ready(function () {
                 }
                 people = Voters.response[0].users;
                 people.shift();
-                ids = people.join(',');
+                var filtredPeople = [];
+                people.forEach(function(item){
+                    if($.localStorage.get(item) == null)
+                        filtredPeople.push(item);
+                });
+                ids = filtredPeople.join(',');
                 var params = {user_ids: ids, fields: 'sex,online,photo_100'};
 
 
@@ -166,6 +179,9 @@ $(document).ready(function () {
 
         }
     });
+    $('.dropdown-menu > li > a').on('click', function () {
+        alert($(this).data("id"));
+    })
 
 });
 function go(e){
@@ -182,3 +198,4 @@ function blockUser(id, e){
     $.localStorage.set(id, 0);
    $(e).parent().parent().parent().parent().remove();
 }
+
