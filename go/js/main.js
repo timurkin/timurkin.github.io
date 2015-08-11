@@ -25,7 +25,7 @@ $(document).ready(function () {
             if (response.session) {
                 GO(response.session);
             } else {
-                VK.Auth.getLoginStatus(authInfo,4);
+                VK.Auth.getLoginStatus(authInfo);
             }
         });
 
