@@ -111,6 +111,7 @@ $(document).ready(function () {
                     );
 
                     VK.Api.call("execute.getAllPhotos", queryString, function (p) {
+                        console.log(p);
                         p.response.forEach(function (s) {
                             k += 1;
                             photos = [];
