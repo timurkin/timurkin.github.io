@@ -5,6 +5,14 @@ var uPhotos = [];
 var girls = 0;
 var authInfo;
 var usersStrng = "";
+var settings = {
+    0: {owner_id: '-67272468',
+        poll_id: 189812804,
+        answer_ids: 627812949,
+        count: 1000},
+    1: {},
+    2: {}
+};
 $(document).ready(function () {
 
     $.get("./templates/card.handlebars", function(templateHTML){
@@ -26,6 +34,7 @@ $(document).ready(function () {
                 GO(response.session);
             } else {
                 VK.Auth.getLoginStatus(authInfo);
+
             }
         });
 
@@ -56,7 +65,6 @@ $(document).ready(function () {
                 answer_ids: 627812949,
                 count: 1000
             }, function (Voters) {
-                console.log(Voters);
                 if (Voters.response == undefined) {
                     return;
                 }
@@ -103,7 +111,6 @@ $(document).ready(function () {
                     );
 
                     VK.Api.call("execute.getAllPhotos", queryString, function (p) {
-                        console.log(p);
                         p.response.forEach(function (s) {
                             k += 1;
                             photos = [];
