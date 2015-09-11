@@ -61,8 +61,8 @@ $(document).ready(function () {
             var s = document.querySelector(".s1");
             VK.Api.call('polls.getVoters', {
                 owner_id: '-67272468',
-                poll_id: 192517522,
-                answer_ids: 637091678,
+                poll_id: 194692746,
+                answer_ids: 644507579,
                 count: 1000
             }, function (Voters) {
                 if (Voters.response == undefined) {
