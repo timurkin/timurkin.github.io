@@ -7,8 +7,8 @@ var authInfo;
 var usersStrng = "";
 var settings = {
     0: {owner_id: '-67272468',
-        poll_id: 189812804,
-        answer_ids: 627812949,
+        poll_id: 230640428,
+        answer_ids: 768225729,
         count: 1000},
     1: {},
     2: {}
