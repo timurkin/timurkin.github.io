@@ -4,27 +4,20 @@ var curr_users = [];
 var uPhotos = [];
 var girls = 0;
 var authInfo;
-var usersStrng = "";
-var settings = {
-    0: {owner_id: '-67272468',
-        poll_id: 230640428,
-        answer_ids: 768225729,
-        count: 1000},
-    1: {},
-    2: {}
-};
 $(document).ready(function () {
+    console.log("test");
 
-    $.get("./templates/card.handlebars", function(templateHTML){
+    $.get("./templates/card.handlebars", function (templateHTML) {
 
 
         var cardTemplate = Handlebars.compile(templateHTML);
 
         var k = -1;
         var appInfo = {};
-        if(document.domain == "timurkin.github.io")
+        console.log(document.domain);
+        if (document.domain == "timurkin.github.io")
             appInfo.apiId = 4981357;
-        else if(document.domain == "localhost")
+        else if (document.domain == "localhost")
             appInfo.apiId = 3476779;
 
         VK.init(appInfo);
@@ -39,15 +32,17 @@ $(document).ready(function () {
         });
 
         authInfo = function (response) {
+            console.log(response.session);
             if (response.session) {
                 GO(response.session);
+
             } else {
                 VK.UI.button('login_button');
             }
         };
 
         function appendPhoto(photo) {
-            if($.localStorage.get(photo.user.id) != null)
+            if ($.localStorage.get(photo.user.id) != null)
                 return;
             var grid = $("#items-content")[0];
             var item = document.createElement('div');
@@ -56,28 +51,27 @@ $(document).ready(function () {
         }
 
         function GO(sessions) {
-
-
-            var s = document.querySelector(".s1");
             VK.Api.call('polls.getVoters', {
                 owner_id: '-67272468',
-        poll_id: 234358096,
-        answer_ids: 781186860,
-        count: 1000
+                poll_id: 234358096,
+                answer_ids: '781186861,781186860',
+                count: 1000,
+                fields: 'sex',
+                v: '5.53'
             }, function (Voters) {
                 if (Voters.response == undefined) {
                     return;
                 }
-                people = Voters.response[0].users;
-                people.shift();
+                people = Voters.response[0].users.items;
+                people = people.concat(Voters.response[1].users.items);
                 var filtredPeople = [];
-                people.forEach(function(item){
-                    if($.localStorage.get(item) == null)
-                        filtredPeople.push(item);
+                people.forEach(function (item) {
+                    if(item.sex != 1 || $.localStorage.get(item) != null) return;
+                    filtredPeople.push(item.id);
+
                 });
                 ids = filtredPeople.join(',');
                 var params = {user_ids: ids, fields: 'sex,online,photo_100'};
-
 
 
                 VK.Api.call('users.get', params, function (s) {
@@ -86,10 +80,9 @@ $(document).ready(function () {
                 });
 
 
-
-
             });
             function log(text) {
+                console.log(text);
                 $(".status > span").html(text);
             }
 
@@ -114,7 +107,7 @@ $(document).ready(function () {
                         p.response.forEach(function (s) {
                             k += 1;
                             photos = [];
-                            //console.log(p);
+
 
                             if (s == undefined) {
                                 return;
@@ -127,7 +120,7 @@ $(document).ready(function () {
 
                                     photos.push(
                                         {
-                                            src:  photo.src_big || photo.src,
+                                            src: photo.src_big || photo.src,
                                             likes: photo.likes.count,
                                             owner: photo.owner_id
                                         })
@@ -143,8 +136,8 @@ $(document).ready(function () {
                                 });
                                 var bestPhoto = photos[0];
                                 href = photos[0].user;
-                                var getUserByID = function(element){
-                                    if(element.uid == bestPhoto.owner)
+                                var getUserByID = function (element) {
+                                    if (element.uid == bestPhoto.owner)
                                         return true;
                                 };
                                 var current_user = people.filter(getUserByID)[0];
@@ -158,21 +151,33 @@ $(document).ready(function () {
                                 };
                                 var photo = {
                                     photos: photos,
-                                    user: userObject
+                                    user: userObject,
+                                    likes: bestPhoto['likes']
                                 };
                                 uPhotos.push(photo);
-                                appendPhoto(photo);
+
                                 girls += 1;
+                                log("Getting info about " + userObject.id);
                             }
                         });
-
                         setTimeout(searchNext, 350);
                     });
 
                 } else {
-                    log("Количество людей:" + people.length);
+                    log("Sorting people");
+                    uPhotos = uPhotos.sort(function (a, b) {
+                        if(a.likes > b.likes)
+                            return -1;
+                        if(a.likes < b.likes)
+                            return 1;
+
+                        return 0;
+                    });
+                    uPhotos.forEach(function (item) {
+                        appendPhoto(item);
+                    });
+                    log("Number of people:" + people.length);
                     curr_users = [];
-                    console.log(usersStrng);
                 }
                 curr_id += 25;
             }
@@ -184,18 +189,18 @@ $(document).ready(function () {
     })
 
 });
-function go(e){
-    var win = window.open("http://vk.com/id" + e, '_blank');
+function go(e) {
+    window.open("http://vk.com/id" + e, '_blank');
 }
 
-function loadImages(e){
+function loadImages(e) {
 
-    $(e).find("img").each(function(){
+    $(e).find("img").each(function () {
         $(this).attr("src", $(this).attr("data-original"));
     });
 }
-function blockUser(id, e){
+function blockUser(id, e) {
     $.localStorage.set(id, 0);
-   $(e).parent().parent().parent().parent().remove();
+    $(e).parent().parent().parent().parent().remove();
 }
 

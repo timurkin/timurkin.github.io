@@ -7,17 +7,22 @@ img {
 }
 
 HTML, BODY{
-    background-color: #080808;
+    background-color: #232323;
 }
 .loading {
     background: url(../css/496.GIF) no-repeat center;
 }
 
 .status {
-    position: fixed;
-    left: 5px;
-    z-index: 100;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
     cursor: pointer;
+    background-color: black;
+}
+.status span{
+    color: white;
 }
 .img-thumbnail > div{
     background-size: cover;
@@ -53,17 +58,19 @@ HTML, BODY{
     margin-right: 0;
 }
 div.photo{
+
     width: 100% !important;
     height: auto !important;
     position: relative;
-    margin: 0 0 2px 0;
+    margin: 0;
+    padding: 5px;
 }
 div.photo > div.info{
     position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    top: 5px;
+    left: 5px;
+    bottom: 5px;
+    right: 5px;
     background-color: rgba(0, 0, 0, 0.5);
     text-align: center;
     color: white;
@@ -106,9 +113,6 @@ div.photo:hover div.info{
     -o-animation: nameFadeIn linear 0.30s;
     -o-animation-iteration-count: 1;
     -o-transform-origin: 50% 50%;
-    -ms-animation: nameFadeIn linear 0.30s;
-    -ms-animation-iteration-count: 1;
-    -ms-transform-origin: 50% 50%;
 }
 
 
@@ -173,12 +177,16 @@ div.photo:hover div.info{
         content: '3 .col-sm-4';
     }
 }
-@media screen and (min-width:992px) and (max-width: 9999px){
+@media screen and (min-width:992px) and (max-width: 1600px){
+    #items-content[data-columns]::before {
+        content: '4 .col-md-3';
+    }
+}
+@media screen and (min-width:1601px){
     #items-content[data-columns]::before {
         content: '6 .col-md-2';
     }
 }
-
 .row>div{
     padding: 1px;
 }
@@ -224,3 +232,5 @@ div.photo:hover div.info{
     visibility: visible;
 
 }
+
+
