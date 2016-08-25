@@ -151,6 +151,7 @@ $(document).ready(() => {
                                     likes: bestPhoto['likes']
                                 };
                                 uPhotos.push(photo);
+                                appendPhoto(photo);
 
                                 girls += 1;
                                 log("Getting info about " + userObject.id);
@@ -160,18 +161,6 @@ $(document).ready(() => {
                     });
 
                 } else {
-                    log("Sorting people");
-                    uPhotos = uPhotos.sort( (a, b) => {
-                        if (a.likes > b.likes)
-                            return -1;
-                        if (a.likes < b.likes)
-                            return 1;
-
-                        return 0;
-                    });
-                    uPhotos.forEach((item) => {
-                        appendPhoto(item);
-                    });
                     log("Number of people:" + people.length);
                     curr_users = [];
                 }
