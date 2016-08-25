@@ -4,10 +4,10 @@ var curr_users = [];
 var uPhotos = [];
 var girls = 0;
 var authInfo;
-$(document).ready(function () {
+$(document).ready(() => {
     console.log("test");
 
-    $.get("./templates/card.handlebars", function (templateHTML) {
+    $.get("./templates/card.handlebars", (templateHTML) => {
 
 
         var cardTemplate = Handlebars.compile(templateHTML);
@@ -22,7 +22,7 @@ $(document).ready(function () {
 
         VK.init(appInfo);
 
-        VK.Auth.getLoginStatus(function (response) {
+        VK.Auth.getLoginStatus((response) => {
             if (response.session) {
                 GO(response.session);
             } else {
@@ -31,7 +31,7 @@ $(document).ready(function () {
             }
         });
 
-        authInfo = function (response) {
+        authInfo = (response) => {
             console.log(response.session);
             if (response.session) {
                 GO(response.session);
@@ -58,7 +58,7 @@ $(document).ready(function () {
                 count: 1000,
                 fields: 'sex',
                 v: '5.53'
-            }, function (Voters) {
+            }, (Voters) => {
                 if (Voters.response == undefined) {
                     return;
                 }
@@ -66,7 +66,7 @@ $(document).ready(function () {
                 people = people.concat(Voters.response[1].users.items);
                 var filtredPeople = [];
                 people.forEach(function (item) {
-                    if(item.sex != 1 || $.localStorage.get(item) != null) return;
+                    if (item.sex != 1 || $.localStorage.get(item) != null) return;
                     filtredPeople.push(item.id);
 
                 });
@@ -74,7 +74,7 @@ $(document).ready(function () {
                 var params = {user_ids: ids, fields: 'sex,online,photo_100'};
 
 
-                VK.Api.call('users.get', params, function (s) {
+                VK.Api.call('users.get', params, (s) => {
                     people = s.response;
                     setTimeout(searchNext, 350);
                 });
@@ -103,7 +103,7 @@ $(document).ready(function () {
                         }
                     );
 
-                    VK.Api.call("execute.getAllPhotos", queryString, function (p) {
+                    VK.Api.call("execute.getAllPhotos", queryString, (p) => {
                         p.response.forEach(function (s) {
                             k += 1;
                             photos = [];
@@ -113,7 +113,7 @@ $(document).ready(function () {
                                 return;
                             }
                             if (s[0] != 0 && s.length > 0) {
-                                s.forEach(function (photo) {
+                                s.forEach( (photo)  =>{
 
                                     if (typeof photo == "number") return;
                                     if (photo.created < 1388516400)  return;
@@ -127,20 +127,14 @@ $(document).ready(function () {
                                 });
                                 if (photos.length < 1)
                                     return;
-                                photos.sort(function (a, b) {
-                                    if (a.likes > b.likes)
-                                        return -1;
-                                    if (a.likes < b.likes)
-                                        return 1;
-                                    return 0;
-                                });
+
+
+                                photos.sort((a,b) => a.likes > b.likes ? -1 : a.likes < b.likes ? 1 : 0);
                                 var bestPhoto = photos[0];
                                 href = photos[0].user;
-                                var getUserByID = function (element) {
-                                    if (element.uid == bestPhoto.owner)
-                                        return true;
-                                };
-                                var current_user = people.filter(getUserByID)[0];
+
+
+                                var current_user = people.filter(element => element.uid == bestPhoto.owner)[0];
 
                                 var userObject = {
                                     id: bestPhoto.owner,
@@ -165,15 +159,15 @@ $(document).ready(function () {
 
                 } else {
                     log("Sorting people");
-                    uPhotos = uPhotos.sort(function (a, b) {
-                        if(a.likes > b.likes)
+                    uPhotos = uPhotos.sort( (a, b) => {
+                        if (a.likes > b.likes)
                             return -1;
-                        if(a.likes < b.likes)
+                        if (a.likes < b.likes)
                             return 1;
 
                         return 0;
                     });
-                    uPhotos.forEach(function (item) {
+                    uPhotos.forEach((item) => {
                         appendPhoto(item);
                     });
                     log("Number of people:" + people.length);
@@ -184,7 +178,7 @@ $(document).ready(function () {
 
         }
     });
-    $('.dropdown-menu > li > a').on('click', function () {
+    $('.dropdown-menu > li > a').on('click', () => {
         alert($(this).data("id"));
     })
 
