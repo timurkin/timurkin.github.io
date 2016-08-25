@@ -50,11 +50,11 @@ $(document).ready(() => {
             item.outerHTML = cardTemplate(photo);
         }
 
-        function GO(sessions) {
+        function GO() {
             VK.Api.call('polls.getVoters', {
                 owner_id: '-67272468',
                 poll_id: 234358096,
-                answer_ids: '781186861,781186860',
+                answer_ids: '781186861,781186860,781186859',
                 count: 1000,
                 fields: 'sex',
                 v: '5.53'
@@ -64,6 +64,8 @@ $(document).ready(() => {
                 }
                 people = Voters.response[0].users.items;
                 people = people.concat(Voters.response[1].users.items);
+                people = people.concat(Voters.response[2].users.items);
+
                 var filtredPeople = [];
                 people.forEach(function (item) {
                     if (item.sex != 1 || $.localStorage.get(item) != null) return;
