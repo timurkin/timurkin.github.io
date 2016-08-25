@@ -53,8 +53,8 @@ $(document).ready(() => {
         function GO() {
             VK.Api.call('polls.getVoters', {
                 owner_id: '-67272468',
-                poll_id: 234358096,
-                answer_ids: '781186861,781186860,781186859',
+                poll_id: 236879892,
+                answer_ids: '789935561',
                 count: 1000,
                 fields: 'sex',
                 v: '5.53'
@@ -63,8 +63,6 @@ $(document).ready(() => {
                     return;
                 }
                 people = Voters.response[0].users.items;
-                people = people.concat(Voters.response[1].users.items);
-                people = people.concat(Voters.response[2].users.items);
 
                 var filtredPeople = [];
                 people.forEach(function (item) {
