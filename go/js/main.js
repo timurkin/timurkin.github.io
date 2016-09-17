@@ -53,8 +53,8 @@ $(document).ready(() => {
         function GO() {
             VK.Api.call('polls.getVoters', {
                 owner_id: '-67272468',
-                poll_id: 236879892,
-                answer_ids: '789935561',
+                poll_id: 238619293,
+                answer_ids: '796026802',
                 count: 1000,
                 fields: 'sex',
                 v: '5.53'
