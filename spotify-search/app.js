@@ -4,7 +4,7 @@ angular.module('searchMusicApp')
     .config(function ($routeProvider) {
         $routeProvider.
             when('/search', {
-                templateUrl: '/views/search.html',
+                templateUrl: 'views/search.html',
                 controller: 'spotifySearchResults as searchController'
             })
             .when('/artist/:id/:name', {
