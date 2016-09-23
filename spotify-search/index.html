@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru" ng-app="searchMusicApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Spotify search</title>
+
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+
+    <script src="app.js"></script>
+    <script src="artist-search/search.module.js"></script>
+    <script src="artist-search/results-list.component.js"></script>
+    <script src="artist-page/artist-page.module.js"></script>
+    <script src="artist-page/albums-list.component.js"></script>
+
+    <script src="spotify/spotify.module.js"></script>
+    <script src="spotify/search.controller.js"></script>
+    <script src="spotify/artist-page.controller.js"></script>
+
+
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="bower_components/MDBootstrap/css/mdb.min.css">-->
+    <link rel="stylesheet" href="app.css">
+
+</head>
+<body>
+    <br>
+    <div class="container-fluid" ng-view>
+    </div>
+
+</body>
+</html>

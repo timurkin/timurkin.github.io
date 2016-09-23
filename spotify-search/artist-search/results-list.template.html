@@ -1,0 +1,5 @@
+<ul class="search-list">
+    <li ng-repeat="artist in $ctrl.artists track by $index" class="search-list-item">
+        <a href="#/artist/{{artist.id}}/{{artist.name}}">{{artist.name}}</a>
+    </li>
+</ul>
