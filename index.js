@@ -13,8 +13,8 @@ function update() {
             trackID = getTrackID(track),
             title = track['name'],
             artist = track['artist']['#text'];
-        console.log(track['@attr']['nowplaying']);
-        if(trackID == current_mbid || track['@attr']['nowplaying'] != true)
+        console.log(typeof track['@attr']['nowplaying']);
+        if(trackID == current_mbid || !!track['@attr']['nowplaying'] != true)
             return;
 
         current_mbid = trackID;
