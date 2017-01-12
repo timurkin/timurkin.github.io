@@ -14,7 +14,7 @@ function update() {
             title = track['name'],
             artist = track['artist']['#text'];
 
-        if(trackID == current_mbid || track['nowplaying'] == false)
+        if(trackID == current_mbid || track['@attr']['nowplaying'] != false)
             return;
 
         current_mbid = trackID;
