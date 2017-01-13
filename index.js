@@ -13,6 +13,8 @@ function update() {
             trackID = getTrackID(track),
             title = track['name'],
             artist = track['artist']['#text'];
+
+        extraAlbumImage = extraAlbumImage ? extraAlbumImage : "http://i.imgur.com/nszu54A.jpg";
         console.log(typeof track['@attr']['nowplaying']);
         if(trackID == current_mbid || !!track['@attr']['nowplaying'] != true)
             return;
@@ -44,3 +46,6 @@ function update() {
 $(document).ready(function() {
     update();
 });
+
+
+let c = ({a: {b}}) => ({b});
