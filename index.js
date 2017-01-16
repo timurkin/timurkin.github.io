@@ -2,10 +2,12 @@ var current_mbid = "",
     inited = false;
 
 function getTrackID(track){
-    return track['name'] + track['artist']['#text'];
+    return track['artist']['#text'] + ' - ' + track['name'];
 }
 
 function update() {
+
+
     $.getJSON("http://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=kazerxxx&api_key=24f6b03517ad9984de417be5d10e150b&limit=1&format=json&callback=?", function(data) {
         var track = data['recenttracks']['track'][0],
             albumImages = track['image'],
@@ -15,7 +17,8 @@ function update() {
             artist = track['artist']['#text'];
 
         extraAlbumImage = extraAlbumImage ? extraAlbumImage : "http://i.imgur.com/nszu54A.jpg";
-        console.log(typeof track['@attr']['nowplaying']);
+
+
         if(trackID == current_mbid || !!track['@attr']['nowplaying'] != true)
             return;
 
@@ -32,6 +35,10 @@ function update() {
                 $(this).fadeIn(500);
 
                 if(!inited){
+                    $(".track-name").click(function () {
+                        var a = window.open('https://vk.com/audio?q=' + encodeURIComponent(current_mbid), "name");
+                        a.focus();
+                    });
                     inited = true;
                     $(".loading-screen").fadeOut(300);
                 }
@@ -46,6 +53,3 @@ function update() {
 $(document).ready(function() {
     update();
 });
-
-
-let c = ({a: {b}}) => ({b});

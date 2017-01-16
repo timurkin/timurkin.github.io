@@ -28,6 +28,7 @@ body{
     left: 50%;
 }
 .current{
+
     text-align: center;
     color: white;
 
@@ -43,6 +44,9 @@ body{
     height: 300px;
     margin: auto;
     background-size:100%;
+}
+.track-name{
+    cursor: pointer;
 }
 #preload-image{
     width: 0;
@@ -67,9 +71,4 @@ body{
 }
 span.status{
     color: rgba(255,255,255, 0.3);
-}
-.hide{
-    visibility: hidden;
-    width: 0;
-    height: 0;
 }
