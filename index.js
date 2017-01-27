@@ -16,7 +16,7 @@ function update() {
             title = track['name'],
             artist = track['artist']['#text'];
 
-        extraAlbumImage = extraAlbumImage ? extraAlbumImage : "http://i.imgur.com/nszu54A.jpg";
+        extraAlbumImage = extraAlbumImage ? extraAlbumImage : "no-cover.png";
 
 
         if(trackID == current_mbid || !!track['@attr']['nowplaying'] != true)
