@@ -1,22 +1,29 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <title>timurkin</title>
-    <link rel="stylesheet" href="./assets/css/clear.css">
-    <link rel="stylesheet" href="./assets/css/main.css">
+    <title>#NowPlaying</title>
+
+    <script src="./assets/bundle.js"></script>
+    <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-    <div id="head" class="vertical-center-wrapper full-w-h">
-        <div class="vertical-center full-width">
-            <h1>Work in progress</h1>
-            <br>
-
-        </div>
-        <div class="push-bottom full-width">
-            <h5><a href="malito:timurkopeisk@gmail.com">Contact me?</a></h5>
+    <div class="loading-screen">
+        <div class="vertical-center-wrapper">
+            <div class="vertical-center">
+                <img src="./assets/loading.svg" class="loading"/><br><br><br>
+                <span class="status">Loading...</span>
+            </div>
         </div>
     </div>
-
+    <div class="vertical-center-wrapper">
+        <div class="vertical-center">
+            <div class="current">
+                <span class="artist-name"></span>
+                <div class="current-thumbnail"></div>
+                <span class="track-name" title="Найти песню вконтакте"></span>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
