@@ -1,44 +1,30 @@
-/* PURE CSS */
+/* PURE JAVASCRIPT */
 
 //youmightnotneedjquery.com
-let fadeIn = (el) => {
-    return new Promise((resolve, reject) => {
-        el.style.opacity = 0;
 
-        let last = +new Date();
-        let tick = function() {
-            el.style.opacity = +el.style.opacity + (new Date() - last) / 400;
-            last = +new Date();
+let generateFade = (startOpacity, endOpacity) => {
+    return (el, duration=400) => {
+        return new Promise((resolve, reject) => {
+            el.style.opacity = startOpacity
+            let mod = (startOpacity > endOpacity ? -1 : 1)
+            let last = +new Date()
+            let tick = function() {
+                el.style.opacity = +el.style.opacity +  mod*(new Date() - last) / duration
+                last = +new Date()
 
-            if (+el.style.opacity < 1) {
-                (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
-            }else{
-                resolve(el)
-            }
-        };
+                if (+el.style.opacity < mod*endOpacity) {
+                    (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16)
+                }else{
+                    resolve(el)
+                }
+            };
 
-        tick();
-    })
+            tick()
+        })
+    }
 }
-let fadeOut = (el) => {
-    return new Promise((resolve, reject) => {
-        el.style.opacity = 1;
-
-        let last = +new Date();
-        let tick = function() {
-            el.style.opacity = +el.style.opacity - (new Date() - last) / 400;
-            last = +new Date();
-
-            if (+el.style.opacity > 0) {
-                (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
-            }else{
-                resolve(el)
-            }
-        };
-
-        tick();
-    })
-}
+let fadeIn = generateFade(0, 1)
+let fadeOut = generateFade(1, 0)
 
 
 let currentID = '',
