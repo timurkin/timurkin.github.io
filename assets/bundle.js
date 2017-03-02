@@ -1,6 +1,6 @@
 /* PURE CSS */
 
-
+//youmightnotneedjquery.com
 let fadeIn = (el) => {
     return new Promise((resolve, reject) => {
         el.style.opacity = 0;
