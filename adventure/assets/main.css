@@ -1,0 +1,471 @@
+@import url("./fonts/NewBaskervilleC.css");
+@import url("https://fonts.googleapis.com/css?family=PT+Sans");
+BODY,
+HTML {
+  width: 100%;
+  font-size: 14px;
+  font-family: "NewBaskervilleC";
+  font-weight: normal;
+}
+
+img {
+  display: block;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.f-w {
+  width: 100%;
+}
+
+header {
+  width: 100%;
+  height: 80px;
+  color: white;
+  position: relative;
+}
+
+header .container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  padding: 4px 10px;
+}
+
+header .container .logo img {
+  width: 41px;
+}
+
+header .container .logo:before {
+  content: '';
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #282a2d;
+  z-index: -1;
+  transition: background .1s ease;
+}
+
+header .container .logo:hover:before {
+  background-color: #22539d;
+}
+
+header .container .title {
+  margin-left: 22px;
+}
+
+header .container .title h1 {
+  font-size: 28px;
+}
+
+header .container .title span {
+  position: relative;
+  top: -3px;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 11px;
+  color: rgba(235, 244, 255, 0.25);
+}
+
+footer {
+  height: 60px;
+  width: 100%;
+  background: #282a2d;
+}
+
+footer .container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 992px) {
+  footer .container {
+    padding: 0 10px;
+  }
+}
+
+footer .container small {
+  font-size: 16px;
+  color: #6b7076;
+}
+
+footer .container span {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 14px;
+  color: #6b7076;
+}
+
+footer .container span a {
+  color: #b5b9be;
+}
+
+ul.filter {
+  margin-top: 64px;
+  margin-bottom: 22px;
+  list-style: none;
+}
+
+@media screen and (max-width: 992px) {
+  ul.filter {
+    margin-left: 10px;
+  }
+}
+
+ul.filter li {
+  position: relative;
+  display: inline-block;
+  margin-right: 26px;
+}
+
+ul.filter li a {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #9fa2a8;
+  cursor: pointer;
+}
+
+ul.filter li:hover a {
+  color: #242526;
+}
+
+ul.filter li.active:after {
+  content: " ";
+  background-color: #242526;
+  position: absolute;
+  bottom: -2px;
+  height: 2px;
+  width: 100%;
+  left: 0;
+}
+
+ul.filter li.active a {
+  color: #242526;
+}
+
+main .container .countries {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+}
+
+main .container .countries .column {
+  flex-wrap: wrap;
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+main .container .countries .column .tile {
+  background-size: 100%;
+  background-repeat: no-repeat;
+  position: relative;
+  width: calc(50% - 10px);
+  margin-bottom: 20px;
+  transition: transform .3s;
+}
+
+@media screen and (max-width: 540px) {
+  main .container .countries .column .tile {
+    width: 100%;
+  }
+}
+
+main .container .countries .column .tile.big {
+  width: 100%;
+}
+
+main .container .countries .column .tile.big .content {
+  color: white;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 86px 32px 32px 32px;
+  background: rgba(3, 21, 36, 0.6) !important;
+}
+
+main .container .countries .column .tile.big .content h2 {
+  font-size: 40px;
+}
+
+main .container .countries .column .tile.big .content ul {
+  list-style: decimal;
+  padding-left: 30px;
+  padding-top: 32px;
+}
+
+main .container .countries .column .tile.big .content ul li {
+  font-size: 20px;
+  margin-bottom: 1em;
+}
+
+@media screen and (max-width: 540px) {
+  main .container .countries .column .tile.big .content {
+    padding-top: 32px;
+  }
+  main .container .countries .column .tile.big .content ul {
+    padding-top: 10px;
+  }
+}
+
+main .container .countries .column .tile.disabled {
+  transform: scale(0.8);
+}
+
+main .container .countries .column .tile.disabled:before {
+  z-index: 1;
+  position: absolute;
+  display: block;
+  content: " ";
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+main .container .countries .column .tile img {
+  width: 100%;
+}
+
+main .container .countries .column .tile .size-fix {
+  visibility: hidden;
+  width: 100%;
+}
+
+main .container .countries .column.first-column {
+  padding-right: 10px;
+}
+
+main .container .countries .column.second-column {
+  padding-left: 10px;
+}
+
+@media screen and (max-width: 992px) {
+  main .container .countries .column {
+    width: 100%;
+  }
+  main .container .countries .column.first-column, main .container .countries .column.second-column {
+    padding: 0 10px;
+  }
+  main .container .countries .column.second-column {
+    order: -1;
+  }
+}
+
+main .wrapper {
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+main .wrapper div {
+  height: 100%;
+}
+
+main .wrapper .slides {
+  position: relative;
+  height: 100%;
+}
+
+main .wrapper .slides .nav-arrow {
+  z-index: 2;
+  position: absolute;
+  content: " ";
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  bottom: 20px;
+  opacity: 0.15;
+}
+
+main .wrapper .slides .nav-arrow:hover {
+  opacity: 0.3;
+}
+
+main .wrapper .slides .nav-arrow.next-arrow {
+  right: 20px;
+  background: url("./svg/next_slide.svg") center center;
+}
+
+main .wrapper .slides .nav-arrow.prev-arrow {
+  right: 58px;
+  background: url("./svg/prev_slide.svg") center center;
+}
+
+main .wrapper .slides .slide {
+  height: 100%;
+  background-position: center center !important;
+  color: white;
+}
+
+main .wrapper .slides .slide .content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+main .wrapper .slides .slide .content .subtitle {
+  z-index: 2;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-size: 24px;
+}
+
+main .wrapper .slides .title {
+  background-size: 100%;
+  background-position: center center;
+  background-repeat: none;
+}
+
+main .wrapper .slides .title .content {
+  background: rgba(3, 21, 36, 0.6);
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+main .wrapper .slides .title h2 {
+  font-size: 36px;
+  color: white;
+}
+
+main .wrapper .slides .text {
+  background-color: #313336;
+}
+
+main .wrapper .slides .text p {
+  font-size: 14px;
+  font-family: 'PT Sans', sans-serif;
+  color: #abaeb3;
+  text-align: left;
+  padding: 20px;
+}
+
+main .wrapper .slides .media {
+  text-align: center;
+  position: relative;
+}
+
+main .wrapper .slides .media:before {
+  z-index: 1;
+  position: absolute;
+  display: block;
+  content: " ";
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(7, 26, 42, 0.2);
+}
+
+main .wrapper .slides .media .thumbnail {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+main .wrapper .slides .media .expand {
+  z-index: 3;
+  position: absolute;
+  width: 100%;
+  height: 42px;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  z-index: 3;
+  cursor: pointer;
+}
+
+main .wrapper .slides .media.photo .expand {
+  background: url("./svg/icon_zoom.svg") center center no-repeat;
+}
+
+main .wrapper .slides .media.video .expand {
+  background: url("./svg/icon_play.svg") center center no-repeat;
+}
+
+.modal-wrapper {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 26, 31, 0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-wrapper.show {
+  display: flex;
+}
+
+.modal-wrapper .close-wrapper {
+  z-index: 1000;
+  position: absolute;
+  content: " ";
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-wrapper .modal-content-wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.modal-wrapper .modal-content-wrapper .close {
+  z-index: 1002;
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  height: 28px;
+  width: 28px;
+  background: url(./svg/icon_close.svg);
+  opacity: .2;
+  cursor: pointer;
+}
+
+.modal-wrapper .modal-content-wrapper .close:hover {
+  opacity: .5;
+}
+
+.modal-wrapper .modal-content-wrapper .modal-content {
+  z-index: 1001;
+  position: relative;
+}
+
+.modal-wrapper .modal-content-wrapper .modal-content .modal-video {
+  width: 100%;
+  min-width: 740px;
+  height: 50%;
+  min-height: 480px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1260px;
+  margin: auto;
+}
