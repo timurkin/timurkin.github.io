@@ -111,7 +111,7 @@ footer .container span a {
 
 ul.filter {
   margin-top: 64px;
-  margin-bottom: 22px;
+  margin-bottom: 12px;
   list-style: none;
 }
 
@@ -125,6 +125,7 @@ ul.filter li {
   position: relative;
   display: inline-block;
   margin-right: 26px;
+  margin-bottom: 10px;
 }
 
 ul.filter li a {
