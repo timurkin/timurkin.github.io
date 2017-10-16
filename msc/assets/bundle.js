@@ -22,8 +22,6 @@ let generateFade = (startOpacity, endOpacity) => {
 };
 let fadeIn = generateFade(0, 1);
 let fadeOut = generateFade(1, 0);
-fetch()
-
 let currentID = '',
     __INITIALIZED__ = false;
 
