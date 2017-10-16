@@ -53,10 +53,6 @@ let fetch = () => {
                     trackName = currentTrack.name,
                     artistName = currentTrack.artist['#text'];
 
-                if (!nowPlaying) {
-                    fadeIn(document.querySelector('.loading-screen')).then((el) => el.style.display = 'block');
-                    __INITIALIZED__ = false;
-                }
                 if (currentTrackID === currentID) return;
 
                 currentID = currentTrackID;
