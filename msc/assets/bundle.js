@@ -22,7 +22,7 @@ let generateFade = (startOpacity, endOpacity) => {
 };
 let fadeIn = generateFade(0, 1);
 let fadeOut = generateFade(1, 0);
-
+fetch()
 
 let currentID = '',
     __INITIALIZED__ = false;
@@ -50,13 +50,14 @@ let fetch = () => {
                     currentTrack = data.recenttracks.track[0],
                     albumCovers = currentTrack.image,
                     largeCover = albumCovers[albumCovers.length - 1]['#text'].replace('300x300', '900x900') || './assets/no-cover.png',
-                    nowPlaying = currentTrack['@attr']['nowplaying'],
+                    nowPlaying = currentTrack['@attr'] ? currentTrack['@attr']['nowplaying']: false,
                     currentTrackID = getTrackID(currentTrack),
                     trackName = currentTrack.name,
                     artistName = currentTrack.artist['#text'];
 
                 if (!nowPlaying) {
                     fadeIn(document.querySelector('.loading-screen')).then((el) => el.style.display = 'block');
+                    __INITIALIZED__ = false;
                 }
                 if (currentTrackID === currentID) return;
 
