@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        BODY {
+            font-family: sans-serif;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .console {
+            color: #bebebe;
+            font-weight: 300;
+            font-style: italic;
+            margin: 20px;
+            border: 1px #dadada solid;
+            background: rgb(36, 36, 36);
+        }
+
+        .logs-list {
+            width: 100%;
+            list-style: none;
+        }
+
+        .logs-list li {
+            padding: 5px 10px;
+            border-bottom: rgba(218, 218, 218, 0.14) 1px dashed;
+        }
+
+        .logs-list li:last-child {
+            border-bottom: none;
+        }
+
+        .logs-list li:nth-child(2n) {
+        }
+
+        .progress-bar {
+            height: 2px;
+            background: blue;
+            max-width: 100%;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const restoreLogger = (log) => {
+                const {time: maxTime} = log[log.length - 1];
+                const container = document.getElementById('logs-list');
+                while (container.firstChild) {
+                    container.removeChild(container.firstChild);
+                }
+                const progress = document.getElementById('progress-bar');
+                const startTime = new Date();
+
+                const progressInterval = setInterval(_ => {
+                    const progressPercent = (Date.now().valueOf() - startTime) / maxTime * 100;
+                    progressPercent >= 100 && clearInterval(progressInterval);
+                    progress.style.width = `${progressPercent}%`
+                }, 10);
+
+                log.forEach((i, k) => {
+                    const logBody = document.createElement('li');
+                    logBody.innerHTML = i.args.length > 1 ? JSON.stringify(i.args) : new String(i.args[0]);
+                    setTimeout(() => {
+                        container.appendChild(logBody);
+                        (k === log.length - 1) && restoreLogger(log);
+                    }, i.time);
+                });
+                return true;
+            };
+            restoreLogger(JSON.parse('[{"time":0,"args":[0, 12]},{"time":1500,"args":[1]},{"time":4000,"args":[2]},{"time":7503,"args":[3]},{"time":12000,"args":[4]}]'))
+        });
+    </script>
+</head>
+<body>
+<div id="console" class="console">
+    <div class="progress-bar" id="progress-bar"></div>
+    <ul class="logs-list" id="logs-list">
+
+    </ul>
+</div>
+</body>
+</html>

@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>#NowPlaying</title>
-
-    <script src="assets/bundle.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+    <script src="assets/app.js"></script>
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-    <div class="loading-screen">
+<div id="app">
+    <div class="loading-screen" v-if="!currentTrack">
         <div class="vertical-center-wrapper">
             <div class="vertical-center">
                 <img src="assets/loading.svg" class="loading"/><br><br><br>
@@ -16,14 +17,17 @@
             </div>
         </div>
     </div>
-    <div class="vertical-center-wrapper">
+    <div class="vertical-center-wrapper page-background" v-else v-bind:style="coverStyle">
         <div class="vertical-center">
             <div class="current">
-                <span class="artist-name"></span>
-                <div class="current-thumbnail"></div>
-                <span class="track-name" title="Найти песню вконтакте"></span>
+                <span class="artist-name">{{ currentTrack.artist }}</span>
+                <div class="current-thumbnail" v-bind:style="coverStyle"></div>
+                <span class="track-name">{{ currentTrack.name }}</span>
+
             </div>
         </div>
+        <div class="progress" v-bind:style="progressBarStyle"></div>
     </div>
+</div>
 </body>
 </html>
