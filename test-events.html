@@ -9,8 +9,8 @@
 
     <script>
         function emitEvent(name, data) {
-            if (mobileApp && mobileApp.emitEvent) {
-                mobileApp.emitEvent(name, data)
+            if (window.mobileApp && window.mobileApp.emitEvent) {
+                window.mobileApp.emitEvent(name, data)
             }
         }
 
