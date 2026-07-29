@@ -1,0 +1,156 @@
+name: AI Task
+
+# STUB — for exercising the dev-loop service, not for doing any work.
+#
+# Copy this over `.github/workflows/ai-task.yml` in a sandbox repository. It
+# mimics every point the service actually couples to, and nothing else:
+#
+#   * `run-name: AI task #<n>` — the only join key between a dispatch and its
+#     run, matched by equality in findRunForIssue()
+#   * the `issue_number` input, same name and type
+#   * a branch named `ai/issue-<n>`, which the service derives rather than reads
+#   * a **draft** pull request on that branch, which findPullRequestForBranch()
+#     looks up once the run goes green
+#   * steps named "Iteration N", which getRunProgress() reads to flip the task
+#     from `implementing` to `reviewing`
+#   * the run conclusion, which decides `awaiting_user` vs `failed`
+#
+# It needs no secrets: the default GITHUB_TOKEN is enough, so a sandbox needs
+# neither CLAUDE_CODE_OAUTH_TOKEN nor an APP_PRIVATE_KEY. It writes one throwaway
+# file and runs in well under a minute.
+#
+# `outcome` and `delay_seconds` are additions the real workflow does not have.
+# The service never sends them, so they always take their defaults in a real
+# dispatch — they exist for `gh workflow run`.
+
+# Quoted: an unquoted `#` after a space starts a YAML comment, which would
+# silently truncate this to "AI task" and break the service's run lookup.
+run-name: 'AI task #${{ inputs.issue_number }}'
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Task issue to "implement".
+        required: true
+        type: string
+      outcome:
+        description: Whether the simulated review converges.
+        required: false
+        default: success
+        type: choice
+        options: [success, fail]
+      delay_seconds:
+        description: Pause per iteration, to watch the Slack status change.
+        required: false
+        default: '15'
+        type: string
+
+concurrency:
+  group: ai-task-${{ inputs.issue_number }}
+  cancel-in-progress: false
+
+jobs:
+  implement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    outputs:
+      pr_number: ${{ steps.pr.outputs.number }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Write a throwaway change
+        id: branch
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          set -euo pipefail
+          BRANCH="ai/issue-${ISSUE_NUMBER}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            git fetch origin "$BRANCH" --quiet
+            git checkout -B "$BRANCH" "origin/${BRANCH}"
+          else
+            git checkout -B "$BRANCH" "origin/${GITHUB_REF_NAME}"
+          fi
+
+          mkdir -p .dev-loop-sandbox
+          # Appending, not overwriting: a follow-up /ai-fix dispatch must produce
+          # a *new* commit, otherwise there is nothing to push and the loop
+          # correctly refuses to advance.
+          {
+            echo "- run ${GITHUB_RUN_ID} at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } >> ".dev-loop-sandbox/issue-${ISSUE_NUMBER}.md"
+
+          git add ".dev-loop-sandbox/issue-${ISSUE_NUMBER}.md"
+          git commit -m "feat(sandbox): simulated work for ai-task #${ISSUE_NUMBER}"
+          git push origin "HEAD:${BRANCH}"
+
+          echo "name=${BRANCH}" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the draft PR
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          BRANCH: ${{ steps.branch.outputs.name }}
+        run: |
+          set -euo pipefail
+          EXISTING=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+
+          if [ -n "$EXISTING" ]; then
+            NUMBER="$EXISTING"
+          else
+            URL=$(gh api "repos/${GITHUB_REPOSITORY}/pulls" \
+              -f title="feat(sandbox): simulated work [ai-task #${ISSUE_NUMBER}]" \
+              -f body="Stub pull request for dev-loop testing. Closes #${ISSUE_NUMBER}" \
+              -f head="$BRANCH" \
+              -f base="${GITHUB_REF_NAME}" \
+              -F draft=true \
+              --jq '.html_url')
+            NUMBER=$(basename "$URL")
+          fi
+
+          echo "number=${NUMBER}" >> "$GITHUB_OUTPUT"
+          echo "Using PR #${NUMBER}"
+
+  # A separate job so the run looks like the real one, where review is a
+  # reusable workflow called after implement.
+  review:
+    needs: implement
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      # These step names are load-bearing: getRunProgress() reports the running
+      # step, and the service treats a name containing "iteration" as review.
+      - name: Iteration 1
+        run: sleep "${{ inputs.delay_seconds }}"
+
+      - name: Iteration 2
+        run: sleep "${{ inputs.delay_seconds }}"
+
+      - name: Report the outcome
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh pr comment "${{ needs.implement.outputs.pr_number }}" \
+            --body "🤖 Stub review — outcome \`${{ inputs.outcome }}\`." || true
+
+          if [ "${{ inputs.outcome }}" != "success" ]; then
+            echo "::error::Simulated unresolved review"
+            exit 1
+          fi
