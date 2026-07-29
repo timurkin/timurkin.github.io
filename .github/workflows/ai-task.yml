@@ -40,6 +40,14 @@ on:
         default: success
         type: choice
         options: [success, fail]
+      stand:
+        description: >-
+          Post a fake Railway deploy comment. `none` leaves the task in
+          awaiting_stand so the wait and its timeout can be exercised.
+        required: false
+        default: ready
+        type: choice
+        options: [ready, none]
       delay_seconds:
         description: Pause per iteration, to watch the Slack status change.
         required: false
@@ -141,6 +149,41 @@ jobs:
 
       - name: Iteration 2
         run: sleep "${{ inputs.delay_seconds }}"
+
+      # Stands in for Railway's GitHub bot. The service reads the public URLs
+      # out of that comment -- the GitHub Deployment Railway also creates only
+      # carries a dashboard link -- so the comment's shape is the contract, and
+      # this reproduces it: the version marker, the "Deployed to the [env](url)"
+      # header, and a table whose Web column holds the real URLs. The
+      # tool-sandbox row is here on purpose: it has no Web link, and the parser
+      # must skip it rather than report a service with no address.
+      - name: Simulate the Railway deploy comment
+        if: inputs.stand == 'ready'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ needs.implement.outputs.pr_number }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          set -euo pipefail
+          ENV_NAME="sandbox-pr-${PR_NUMBER}"
+          PROJECT="https://railway.com/project/00000000-0000-0000-0000-000000000000"
+          ENV_URL="${PROJECT}?environmentId=11111111-1111-1111-1111-111111111111"
+
+          # NOTE: these hostnames do not resolve. The point is the shape, not a
+          # reachable page.
+          {
+            echo '<!-- railway-bot-comment-version=2 -->'
+            echo ''
+            echo "🚅 Deployed to the [${ENV_NAME}](${ENV_URL}) environment in **[Sandbox](${PROJECT})**"
+            echo '| **Service** | **Status** | **Web** | **Updated** (UTC) |'
+            echo '| :--- | :--- | :--- | :--- |'
+            echo "| Frontend | ✅ Success ([View Logs](${PROJECT})) | [Web](https://frontend-${ENV_NAME}.up.railway.app) | now |"
+            echo "| API | ✅ Success ([View Logs](${PROJECT})) | [Web](https://api-${ENV_NAME}.up.railway.app) | now |"
+            echo "| tool-sandbox | ✅ Success ([View Logs](${PROJECT})) |  | now |"
+          } > /tmp/railway-comment.md
+
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" \
+            -F body=@/tmp/railway-comment.md --jq '.id'
 
       - name: Report the outcome
         env:
