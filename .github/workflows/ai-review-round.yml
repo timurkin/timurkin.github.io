@@ -80,6 +80,12 @@ jobs:
       pull-requests: write
       issues: write
       checks: write
+    # Without this, `gh pr comment` infers the repository from the git remote and
+    # dies with "fatal: not a git repository" on any round that does not push --
+    # those skip the checkout. A passing round is exactly that case, so the
+    # verdict never reached the service and the task stalled.
+    env:
+      GH_REPO: ${{ github.repository }}
     steps:
       - name: Decide this round's outcome
         id: plan
