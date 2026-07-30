@@ -1,0 +1,224 @@
+name: AI Review Round
+
+# STUB — for exercising the dev-loop service, not for reviewing anything.
+#
+# Copy this over `.github/workflows/ai-review-round.yml` in a sandbox repository.
+# It reproduces the three things the service reads back from a round:
+#
+#   * `run-name: AI review PR #<n> round <k>` — the join key for the dispatch
+#   * a verdict marker in a PR comment, which is how a round's decision gets back
+#     out (a dispatched run cannot return a value, and job outputs are not
+#     exposed by the REST API)
+#   * whether the head commit moved, which is how the service tells a fix that
+#     was pushed from one that was only promised
+#
+# It also publishes a fake check run on anything it pushes, standing in for
+# pr-checks.yml, so the next CI wait resolves instead of timing out.
+#
+# Default behaviour converges the way a real loop should: round 1 requests
+# changes and pushes a fix, round 2 passes. That single round trip exercises
+# awaiting_ci → reviewing → awaiting_ci → reviewing → awaiting_stand, which is
+# the whole of the new state machine.
+#
+# `behaviour` and `stand` are additions the real workflow does not have. The
+# service never sends them, so they take their defaults in a real dispatch.
+
+run-name: 'AI review PR #${{ inputs.pr_number }} round ${{ inputs.round }}'
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request to "review".
+        required: true
+        type: string
+      round:
+        description: 1-based round number.
+        required: true
+        type: string
+      ci_status:
+        description: How the checks settled, as observed by the service.
+        required: false
+        default: success
+        type: string
+      allow_fix:
+        description: Whether this round may push a fix.
+        required: false
+        default: 'true'
+        type: string
+      behaviour:
+        description: >-
+          converge — changes on round 1, pass afterwards (the happy path).
+          never — always request changes and push, until the service runs out of
+          rounds. stuck — request changes but push nothing, so the service stops
+          rather than re-reviewing identical code. error — record no usable
+          verdict.
+        required: false
+        default: converge
+        type: choice
+        options: [converge, never, stuck, error]
+      stand:
+        description: >-
+          Post a fake Railway deploy comment when the round passes. `none` leaves
+          the task in awaiting_stand so that wait and its timeout can be
+          exercised.
+        required: false
+        default: ready
+        type: choice
+        options: [ready, none]
+
+concurrency:
+  group: ai-review-${{ inputs.pr_number }}
+  cancel-in-progress: true
+
+jobs:
+  round:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      checks: write
+    steps:
+      - name: Decide this round's outcome
+        id: plan
+        env:
+          BEHAVIOUR: ${{ inputs.behaviour }}
+          ROUND: ${{ inputs.round }}
+          ALLOW_FIX: ${{ inputs.allow_fix }}
+        run: |
+          set -euo pipefail
+          case "$BEHAVIOUR" in
+            error)
+              verdict=error; push=false ;;
+            never)
+              verdict=changes_requested; push="$ALLOW_FIX" ;;
+            stuck)
+              verdict=changes_requested; push=false ;;
+            *)
+              if [ "$ROUND" = "1" ]; then
+                verdict=changes_requested; push="$ALLOW_FIX"
+              else
+                verdict=pass; push=false
+              fi ;;
+          esac
+          echo "verdict=${verdict}" >> "$GITHUB_OUTPUT"
+          echo "push=${push}" >> "$GITHUB_OUTPUT"
+          echo "Round ${ROUND}: verdict=${verdict} push=${push}"
+
+      - name: Checkout the PR branch
+        if: steps.plan.outputs.push == 'true'
+        uses: actions/checkout@v7
+        with:
+          ref: refs/pull/${{ inputs.pr_number }}/head
+          fetch-depth: 0
+
+      - name: Push a simulated fix
+        id: fix
+        if: steps.plan.outputs.push == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          ROUND: ${{ inputs.round }}
+        run: |
+          set -euo pipefail
+          BRANCH=$(gh pr view "$PR_NUMBER" --json headRefName --jq '.headRefName')
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          mkdir -p .dev-loop-sandbox
+          echo "- fix from round ${ROUND}, run ${GITHUB_RUN_ID}" \
+            >> ".dev-loop-sandbox/fixes-pr-${PR_NUMBER}.md"
+
+          git add ".dev-loop-sandbox/fixes-pr-${PR_NUMBER}.md"
+          git commit -m "fix(sandbox): simulated fix for round ${ROUND}"
+          git push origin "HEAD:${BRANCH}"
+
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Publish a fake check run for the fix
+        if: steps.plan.outputs.push == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ steps.fix.outputs.sha }}
+        run: |
+          set -euo pipefail
+          gh api "repos/${GITHUB_REPOSITORY}/check-runs" \
+            -f name='stub-ci' \
+            -f head_sha="$HEAD_SHA" \
+            -f status='completed' \
+            -f conclusion='success' \
+            --jq '.id'
+
+      # Stands in for Railway's GitHub bot. The service reads the public URLs out
+      # of that comment -- the GitHub Deployment Railway also creates only
+      # carries a dashboard link -- so the comment's shape is the contract, and
+      # this reproduces it: the version marker, the "Deployed to the [env](url)"
+      # header, and a table whose Web column holds the real URLs. The
+      # tool-sandbox row is here on purpose: it has no Web link, and the parser
+      # must skip it rather than report a service with no address.
+      - name: Simulate the Railway deploy comment
+        if: steps.plan.outputs.verdict == 'pass' && inputs.stand == 'ready'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          set -euo pipefail
+          ENV_NAME="sandbox-pr-${PR_NUMBER}"
+          PROJECT="https://railway.com/project/00000000-0000-0000-0000-000000000000"
+          ENV_URL="${PROJECT}?environmentId=11111111-1111-1111-1111-111111111111"
+
+          # NOTE: these hostnames do not resolve. The point is the shape, not a
+          # reachable page.
+          {
+            echo '<!-- railway-bot-comment-version=2 -->'
+            echo ''
+            echo "🚅 Deployed to the [${ENV_NAME}](${ENV_URL}) environment in **[Sandbox](${PROJECT})**"
+            echo '| **Service** | **Status** | **Web** | **Updated** (UTC) |'
+            echo '| :--- | :--- | :--- | :--- |'
+            echo "| Frontend | ✅ Success ([View Logs](${PROJECT})) | [Web](https://frontend-${ENV_NAME}.up.railway.app) | now |"
+            echo "| API | ✅ Success ([View Logs](${PROJECT})) | [Web](https://api-${ENV_NAME}.up.railway.app) | now |"
+            echo "| tool-sandbox | ✅ Success ([View Logs](${PROJECT})) |  | now |"
+          } > "$RUNNER_TEMP/railway-comment.md"
+
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" \
+            -F body=@"$RUNNER_TEMP/railway-comment.md" --jq '.id'
+
+      # The contract. `error` deliberately posts a marker whose verdict is
+      # `error` rather than posting nothing: the service must fail the task with
+      # a reason, not sit waiting for a comment that never comes.
+      - name: Record the verdict
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          ROUND: ${{ inputs.round }}
+          CI_STATUS: ${{ inputs.ci_status }}
+          VERDICT: ${{ steps.plan.outputs.verdict }}
+        run: |
+          set -euo pipefail
+
+          case "$VERDICT" in
+            pass)              summary="Stub reviewer found nothing blocking."; blocking=0 ;;
+            changes_requested) summary="Stub reviewer wants one thing changed."; blocking=1 ;;
+            *)                 summary="Stub reviewer produced no verdict."; blocking=0 ;;
+          esac
+
+          {
+            echo "### 🤖 Stub review — round ${ROUND}: ${VERDICT}"
+            echo ""
+            echo "**CI:** \`${CI_STATUS}\`"
+            echo ""
+            echo "${summary}"
+            echo ""
+            jq -nc \
+              --argjson round "$ROUND" \
+              --arg verdict "$VERDICT" \
+              --argjson blocking "$blocking" \
+              --arg summary "$summary" \
+              '{round: $round, verdict: $verdict, blocking: $blocking, summary: $summary}' \
+              | sed 's/^/<!-- ai-loop-verdict /; s/$/ -->/'
+          } > "$RUNNER_TEMP/verdict-comment.md"
+
+          gh pr comment "$PR_NUMBER" --body-file "$RUNNER_TEMP/verdict-comment.md"
